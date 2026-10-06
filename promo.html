@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FA Strike Promo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@500;700;800&family=Bangers&display=swap">
+  <style>
+    html, body { margin: 0; height: 100%; background: #1E1A2E; color: #fff; font: 500 14px "Be Vietnam Pro", system-ui, sans-serif; }
+    body { display: grid; grid-template-columns: auto 280px; gap: 20px; padding: 16px; box-sizing: border-box; align-items: start; justify-content: center; }
+    canvas { height: calc(100vh - 32px); aspect-ratio: 9 / 16; border-radius: 16px; background: #000; display: block; }
+    aside { display: flex; flex-direction: column; gap: 10px; }
+    button { font: 700 14px "Be Vietnam Pro", system-ui, sans-serif; padding: 10px 12px; border-radius: 10px; border: 0; cursor: pointer; background: #FFD23F; color: #2A1A12; }
+    button.alt { background: #fff; }
+    button:disabled { opacity: .5; cursor: default; }
+    #status { white-space: pre-wrap; font-size: 13px; line-height: 1.5; color: #CFC8E8; }
+  </style>
+</head>
+<body>
+  <canvas id="promo" width="1080" height="1920"></canvas>
+  <aside>
+    <b id="heading">Video quảng bá</b>
+    <button id="play-vi">▶ Xem thử (VI)</button>
+    <button id="play-en" class="alt">▶ Preview (EN)</button>
+    <button id="export-vi">Xuất MP4 tiếng Việt</button>
+    <button id="export-en" class="alt">Export English MP4</button>
+    <div id="status">Đang tải…</div>
+  </aside>
+  <script type="module" src="/src/promo/main.ts"></script>
+</body>
+</html>

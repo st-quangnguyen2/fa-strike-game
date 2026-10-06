@@ -1,0 +1,7 @@
+node_modules
+dist
+.DS_Store
+*.log
+
+# video quảng bá xuất ra (nặng ~40 MB mỗi file)
+promo/*.mp4

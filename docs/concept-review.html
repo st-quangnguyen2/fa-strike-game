@@ -1,0 +1,935 @@
+<title>Ném Cứt Phá Đám</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;700&family=Bangers&display=swap">
+<style>
+/* Layout: comic "concept bible" — hero = phone gameplay mock, then sticker-card sections on a sky-dot page */
+:root {
+  --sky: #6EC6FF;
+  --sky-pale: #E6F6FF;
+  --grass: #7BD35A;
+  --grass-deep: #3E9E48;
+  --sun: #FFD23F;
+  --orange: #FF8A3D;
+  --pink: #FF6FA8;
+  --brown: #8A5A2B;
+  --red: #E8484A;
+  --ink: #2A1A12;
+  --ink-soft: #5B4A40;
+  --card: #FFFFFF;
+  --bg: #EEF8FF;
+  --risk-bg: #FFF0E2;
+  --good-bg: #E9F9E2;
+  --bad-bg: #FFE6E8;
+  --font-display: "Baloo 2", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sfx: "Bangers", "Impact", "Arial Black", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background-color: var(--bg);
+  background-image: radial-gradient(rgba(46,139,234,.13) 1.4px, transparent 1.6px);
+  background-size: 18px 18px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+.wrap { max-width: 1140px; margin: 0 auto; padding-inline: 20px; padding-block: 36px 96px; }
+
+/* ---------- type ---------- */
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.05; text-wrap: balance; margin: 0; }
+h1 {
+  font-size: clamp(46px, 7.4vw, 88px);
+  font-weight: 800;
+  color: var(--pink);
+  -webkit-text-stroke: 3px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 5px 5px 0 var(--ink);
+  letter-spacing: -.01em;
+}
+h2 { font-size: clamp(30px, 4.2vw, 44px); font-weight: 800; }
+h2 .hl { background: linear-gradient(transparent 58%, var(--sun) 58%, var(--sun) 92%, transparent 92%); padding-inline: 4px; }
+h3 { font-size: 22px; font-weight: 800; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.lede { font-size: 17px; max-width: 60ch; color: var(--ink-soft); }
+.sfx { font-family: var(--font-sfx); letter-spacing: .04em; }
+.muted { color: var(--ink-soft); }
+.small { font-size: 13.5px; }
+b, strong { font-weight: 700; }
+
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 48px; align-items: center; }
+.hero-copy { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 2px solid var(--ink); border-radius: 999px; padding: 3px 12px; background: var(--card); font-weight: 600; font-size: 13.5px; }
+.chip.no { background: var(--bad-bg); text-decoration: line-through; text-decoration-thickness: 2px; }
+.swatches { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; max-width: 520px; }
+.sw { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 600; text-align: center; line-height: 1.2; }
+.sw i { display: block; width: 100%; aspect-ratio: 1; max-width: 56px; border: 3px solid var(--ink); border-radius: 50%; }
+.legend-box { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+.legend-box .proposal-dot { flex: none; margin-top: 4px; width: 16px; height: 16px; border: 2px dashed var(--orange); background: var(--risk-bg); border-radius: 4px; }
+
+.phone {
+  justify-self: center;
+  width: 100%; max-width: 340px; aspect-ratio: 9 / 16;
+  border: 6px solid var(--ink); border-radius: 38px; overflow: hidden;
+  background: var(--sky);
+  box-shadow: 10px 10px 0 var(--ink);
+  position: relative;
+}
+.phone svg { display: block; width: 100%; height: 100%; }
+.phone-cap { text-align: center; margin-top: 18px; font-size: 13px; color: var(--ink-soft); }
+
+/* ---------- sections ---------- */
+section { margin-top: 88px; display: flex; flex-direction: column; gap: 22px; }
+.sec-head { display: flex; flex-direction: column; gap: 8px; }
+.card {
+  background: var(--card); border: 3px solid var(--ink); border-radius: 18px;
+  box-shadow: 5px 5px 0 var(--ink);
+  padding: 18px; min-width: 0;
+}
+.grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.grid.wide { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.two { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+
+.char { display: flex; flex-direction: column; gap: 10px; }
+.char .art { background: var(--sky-pale); border: 2px solid var(--ink); border-radius: 12px; height: 170px; display: grid; place-items: center; overflow: hidden; }
+.char .art.grass { background: linear-gradient(var(--sky-pale) 62%, #CDEFB9 62%); }
+.char .art svg { width: 100%; height: 100%; }
+.char h3 { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.pts { font-family: var(--font-sfx); font-size: 22px; letter-spacing: .03em; color: var(--grass-deep); white-space: nowrap; }
+.pts.neg { color: var(--red); }
+.pts.zero { color: var(--ink-soft); }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 13.5px; }
+.kv dt { color: var(--ink-soft); font-weight: 500; }
+.kv dd { margin: 0; font-weight: 500; }
+ul.tight { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.tag { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: 2px solid var(--ink); border-radius: 6px; padding: 0 6px; }
+.tag.good { background: var(--good-bg); }
+.tag.bad { background: var(--bad-bg); }
+.tag.risk { background: var(--risk-bg); }
+
+.proposal { background: var(--risk-bg); border: 2px dashed var(--orange); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; }
+.proposal::before { content: "Đề xuất  "; font-weight: 700; color: #C2551A; }
+
+/* player expressions */
+.player-wrap { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: start; }
+.player-stage { background: linear-gradient(var(--sky-pale) 70%, #CDEFB9 70%); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 5px 5px 0 var(--ink); aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; max-width: 100%; }
+.player-stage svg { width: 100%; height: 100%; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tabs button {
+  font: 600 14px var(--font-body); color: var(--ink);
+  background: var(--card); border: 2px solid var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.tabs button[aria-pressed="true"] { background: var(--orange); }
+.tabs button:focus-visible, a:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+.expr-note { min-height: 3.2em; font-size: 14.5px; }
+
+/* time of day strip */
+.tod { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tod div { border: 3px solid var(--ink); border-radius: 14px; padding: 10px 12px; min-height: 92px; display: flex; flex-direction: column; justify-content: flex-end; font-size: 13px; font-weight: 600; }
+.tod b { font-family: var(--font-display); font-size: 18px; }
+
+/* tables */
+.table-scroll { overflow-x: auto; border: 3px solid var(--ink); border-radius: 16px; box-shadow: 5px 5px 0 var(--ink); background: var(--card); }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1.5px solid #E3DCD6; vertical-align: top; }
+th { background: var(--sun); font-family: var(--font-display); font-size: 15px; font-weight: 800; border-bottom: 3px solid var(--ink); }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+td.num.pos { color: var(--grass-deep); }
+td.num.neg { color: var(--red); }
+tr.group td { background: var(--sky-pale); font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.ico { display: inline-flex; width: 30px; height: 30px; vertical-align: middle; margin-right: 6px; }
+.ico svg { width: 100%; height: 100%; }
+
+/* poop cards */
+.ammo .art { height: 140px; }
+
+/* flow (alert meter) */
+.meter-demo { display: flex; flex-direction: column; gap: 10px; }
+.meter { height: 22px; border: 3px solid var(--ink); border-radius: 999px; overflow: hidden; background: var(--card); display: flex; }
+.meter span { display: block; height: 100%; }
+.flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.state { border: 3px solid var(--ink); border-radius: 14px; padding: 12px; background: var(--card); display: flex; flex-direction: column; gap: 6px; }
+.state .badge { font-family: var(--font-sfx); font-size: 26px; line-height: 1; }
+
+/* decisions */
+.decisions { display: grid; gap: 14px; }
+.dec { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 14px; align-items: start; }
+.dec .id { font-family: var(--font-sfx); font-size: 26px; background: var(--sun); border: 3px solid var(--ink); border-radius: 12px; text-align: center; line-height: 46px; }
+.dec .body { display: flex; flex-direction: column; gap: 6px; }
+.dec .q { font-weight: 700; font-size: 16px; }
+.dec .why { color: var(--ink-soft); font-size: 14px; }
+
+/* motion */
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes wiggle { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.bob { animation: bob 1.6s ease-in-out infinite; transform-box: fill-box; }
+.wiggle { animation: wiggle 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+@media (prefers-reduced-motion: reduce) { .bob, .wiggle { animation: none; } }
+
+@media (max-width: 860px) {
+  .hero, .player-wrap, .two { grid-template-columns: minmax(0, 1fr); }
+  .flow { grid-template-columns: minmax(0, 1fr); }
+  .tod { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .swatches { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .dec { grid-template-columns: 44px minmax(0, 1fr); }
+}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">Concept review · v0.1 · 06/10/2026 · tên quốc tế: FA Strike</span>
+    <h1>Ném Cứt<br>Phá Đám</h1>
+    <p class="lede">Bản review nhân vật, bối cảnh, vật thể và luật tương tác trước khi vào làm. Mọi hình vẽ ở đây là phác thảo đúng art direction: đầu to thân nhỏ, viền đậm, màu tươi, hiệu ứng kiểu truyện tranh.</p>
+    <div class="chips" aria-label="Art direction">
+      <span class="chip">Cute cartoon 2D</span>
+      <span class="chip">Comic SFX</span>
+      <span class="chip">Arcade</span>
+      <span class="chip">Đầu to thân nhỏ</span>
+      <span class="chip">Viền đậm 3px</span>
+      <span class="chip">Hơi vô tri</span>
+      <span class="chip no">Realistic</span>
+      <span class="chip no">Bẩn / ghê</span>
+    </div>
+    <div class="swatches" aria-label="Bảng màu chủ đạo">
+      <div class="sw"><i style="background:#6EC6FF"></i>Trời</div>
+      <div class="sw"><i style="background:#7BD35A"></i>Cỏ</div>
+      <div class="sw"><i style="background:#FFD23F"></i>Nắng</div>
+      <div class="sw"><i style="background:#FF8A3D"></i>Cam<br>người chơi</div>
+      <div class="sw"><i style="background:#FF6FA8"></i>Hồng<br>cặp đôi</div>
+      <div class="sw"><i style="background:#8A5A2B"></i>Nâu<br>“cục”</div>
+      <div class="sw"><i style="background:#2A1A12"></i>Viền</div>
+    </div>
+    <div class="legend-box"><span class="proposal-dot"></span><span>Ô viền cam đứt nét là chỗ bản ý tưởng gốc còn bỏ ngỏ hoặc mâu thuẫn. Mình ghi kèm đề xuất để bạn duyệt. Danh sách đầy đủ ở mục <a href="#chot">Cần chốt</a> cuối trang.</span></div>
+  </div>
+  <div>
+    <div class="phone" id="phone"></div>
+    <p class="phone-cap">Màn 4 · dọc 9:16 · góc nhìn 2.5D từ sau lưng người chơi</p>
+  </div>
+</header>
+
+<!-- ============ BỐI CẢNH ============ -->
+<section id="boi-canh">
+  <div class="sec-head">
+    <span class="eyebrow">Bối cảnh</span>
+    <h2><span class="hl">Công viên Hồ Tình</span></h2>
+    <p class="lede">Công viên phải thật đẹp và yên bình. Cảnh càng lãng mạn thì hành động phá đám càng buồn cười.</p>
+  </div>
+  <div class="two">
+    <div class="card" style="display:flex;flex-direction:column;gap:12px">
+      <h3>3 làn chiều sâu</h3>
+      <p class="small muted">Người chơi đứng cố định ở đáy màn hình, nấp sau bụi cây. Mọi NPC đi lại trên 3 làn ngang. Làn càng xa thì nhân vật càng nhỏ và càng khó ném.</p>
+      <dl class="kv">
+        <dt>Làn xa</dt><dd>Tỉ lệ 45%. Khó trúng, <b>+50 điểm thưởng</b>. Cặp cầu hôn, bà cô hay đứng đây.</dd>
+        <dt>Làn giữa</dt><dd>Tỉ lệ 65%. Lối đi chính, ghế đá. Bảo vệ tuần tra làn này.</dd>
+        <dt>Làn gần</dt><dd>Tỉ lệ 85%. Dễ trúng nhưng người đi đường, trẻ con và chó hay chạy qua.</dd>
+      </dl>
+      <div class="proposal">Thêm điểm thưởng theo làn để người chơi giỏi có lý do ngắm xa. Bản gốc chưa có cơ chế khuyến khích độ khó.</div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:12px">
+      <h3>Vật cảnh có tương tác</h3>
+      <ul class="tight small">
+        <li><b>Bụi cây đáy màn hình</b>: chỗ nấp của người chơi. Núp thì không ai thấy, nhưng cũng không ném được.</li>
+        <li><b>Ghế đá</b>: chỗ cặp sinh viên ngồi. Ném trúng ghế: <span class="sfx">BONK!</span>, cục nảy ra đất.</li>
+        <li><b>Gốc cây, cột đèn</b>: chắn đường bay, cục vỡ thành sao.</li>
+        <li><b>Hồ nước</b>: cục rơi xuống hồ kêu <span class="sfx">BLOOP!</span>, một con vịt ngoi lên nhìn bạn khinh bỉ.</li>
+        <li><b>Xe trà sữa</b>: nơi cặp trà sữa xuất hiện. Trúng xe không mất điểm.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="display:flex;flex-direction:column;gap:12px">
+    <h3>Giờ trong ngày đổi theo màn</h3>
+    <p class="small muted">Dùng chung bộ asset, chỉ đổi màu trời và ánh sáng. Rẻ mà mỗi nhóm màn nhìn khác nhau.</p>
+    <div class="tod">
+      <div style="background:linear-gradient(#9BDBFF,#E6F6FF)"><b>Sáng</b>Màn 1–3 · học luật</div>
+      <div style="background:linear-gradient(#FFB36B,#FFE3B3)"><b>Hoàng hôn</b>Màn 4–6 · nhiều cặp tỏ tình</div>
+      <div style="background:linear-gradient(#5A5FC9,#B9A7F0);color:#fff"><b>Tối, đèn lồng</b>Màn 7–9 · flash máy ảnh rõ hơn</div>
+      <div style="background:linear-gradient(#2B2560,#E05FA0);color:#fff"><b>Đêm pháo hoa</b>Boss cuối</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NGƯỜI CHƠI ============ -->
+<section id="nguoi-choi">
+  <div class="sec-head">
+    <span class="eyebrow">Nhân vật chính</span>
+    <h2><span class="hl">Kẻ Phá Đám</span> áo hoodie cam</h2>
+    <p class="lede">FA đáng thương nhưng cực lầy. Hoodie cam để nổi bật giữa nền xanh trời và xanh cỏ, cũng là màu nhận diện của người chơi trên UI.</p>
+  </div>
+  <div class="player-wrap">
+    <div class="player-stage" id="player-stage" role="img" aria-label="Nhân vật người chơi"></div>
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div class="tabs" role="group" aria-label="Biểu cảm">
+        <button type="button" data-expr="sneaky" aria-pressed="true">Rình</button>
+        <button type="button" data-expr="aim" aria-pressed="false">Ngắm</button>
+        <button type="button" data-expr="flat" aria-pressed="false">Ném hụt</button>
+        <button type="button" data-expr="shock" aria-pressed="false">Bị phát hiện</button>
+        <button type="button" data-expr="dizzy" aria-pressed="false">Ăn dép</button>
+      </div>
+      <p class="expr-note" id="expr-note"></p>
+      <div class="card" style="display:flex;flex-direction:column;gap:10px">
+        <h3>Điều khiển</h3>
+        <dl class="kv">
+          <dt>Ngắm</dt><dd>Kéo ngược như súng cao su. Kéo càng dài ném càng xa.</dd>
+          <dt>Ném</dt><dd>Thả tay. Đường dự đoán chỉ hiện 40% quãng đầu, phần còn lại là kỹ năng.</dd>
+          <dt>Núp</dt><dd>Giữ nút <b>NÚP</b> (hoặc phím Space). Thanh nghi ngờ giảm dần khi đang núp.</dd>
+          <dt>Đổi đạn</dt><dd>Chạm biểu tượng cục ở góc trái dưới.</dd>
+        </dl>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:10px">
+        <h3>Skin mở khóa</h3>
+        <ul class="tight small">
+          <li><b>Ninja Phá Đám</b>: núp và đứng dậy nhanh hơn 30%.</li>
+          <li><b>Ông Chú FA</b> (áo ba lỗ, quạt nan): đường dự đoán dài thêm 10%.</li>
+          <li><b>Học sinh</b>, <b>Hacker</b>, <b>Siêu anh hùng</b>: chỉ đổi ngoại hình.</li>
+          <li><b>Mèo Ghen Tị</b> (thú đi kèm): mỗi màn được 1 lần nhảy ra làm bảo vệ quay đi 3 giây.</li>
+        </ul>
+        <div class="proposal">Skin chủ yếu là ngoại hình, tối đa một ưu điểm nhỏ. Mở bằng điểm chơi để không thành pay-to-win.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ĐẠN ============ -->
+<section id="dan">
+  <div class="sec-head">
+    <span class="eyebrow">Vật ném</span>
+    <h2>Họ nhà <span class="hl">“Cục”</span></h2>
+    <p class="lede">Cục là một nhân vật có mắt to, miệng cười, nâu bóng như sô-cô-la. Khi trúng chỉ có sao và chữ comic, không vẽ vết bẩn thật. Nạn nhân dính một miếng “mặt nạ” hoạt hình rồi nó tự trượt xuống.</p>
+  </div>
+  <div class="grid" id="ammo-grid"></div>
+</section>
+
+<!-- ============ CẶP ĐÔI ============ -->
+<section id="cap-doi">
+  <div class="sec-head">
+    <span class="eyebrow">Mục tiêu</span>
+    <h2>6 kiểu <span class="hl">NPC tình yêu</span></h2>
+    <p class="lede">Cặp đôi phải đáng yêu để người chơi thấy “mình đang phá người ta” chứ không thấy khó chịu. Mỗi kiểu dạy một kỹ năng riêng: đứng yên, di chuyển, canh thời điểm, kiềm chế.</p>
+  </div>
+  <div class="grid" id="couple-grid"></div>
+  <div class="card" style="display:flex;flex-direction:column;gap:10px">
+    <h3>💘 Tình Yêu Phản Công (từ màn 3)</h3>
+    <p class="small">Khi cục đang bay, bóng của nó hiện dưới đất. Cặp đôi có 25% cơ hội nhìn thấy bóng và né sang bên. Người con trai sau khi né sẽ ném dép ngược về phía bụi cây. Người chơi có 0,6 giây để bấm NÚP. Không kịp thì choáng 1,5 giây, mất combo và nhân vật đổi sang mặt <i>Ăn dép</i>.</p>
+    <div class="proposal">Bản gốc chưa nói hậu quả của dép. Đề xuất: choáng và mất combo, không trừ điểm, để cơ chế này là thử thách phản xạ chứ không phải hình phạt.</div>
+  </div>
+</section>
+
+<!-- ============ NPC ============ -->
+<section id="npc">
+  <div class="sec-head">
+    <span class="eyebrow">Chướng ngại vật</span>
+    <h2>Những người <span class="hl">không nên dính</span></h2>
+    <p class="lede">Bản gốc có hai loại nguy hiểm trộn lẫn: người bị ném nhầm (trừ điểm) và người phát hiện ra bạn (dẫn tới Game Over). Mình tách rõ hai vai trò này cho từng NPC.</p>
+  </div>
+  <div class="grid" id="npc-grid"></div>
+</section>
+
+<!-- ============ TƯƠNG TÁC ============ -->
+<section id="tuong-tac">
+  <div class="sec-head">
+    <span class="eyebrow">Hệ thống</span>
+    <h2>Thanh <span class="hl">Nghi Ngờ</span> nối mọi thứ lại</h2>
+    <p class="lede">Bảo vệ không thể tự nhiên “bắt được” người chơi đang đứng yên dưới màn hình. Vì vậy mọi NPC nguy hiểm đều đổ vào một thanh chung từ 0 đến 100. Đầy thanh thì bảo vệ chạy tới bụi cây.</p>
+  </div>
+  <div class="card meter-demo">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><b>Ví dụ một lượt ở màn 6</b><span class="small muted">0 → 100</span></div>
+    <div class="meter" role="img" aria-label="Thanh nghi ngờ ví dụ: nhiếp ảnh gia 35, bà cô 40, trẻ con 20, tổng 95">
+      <span style="width:35%;background:var(--sky)"></span>
+      <span style="width:40%;background:var(--pink)"></span>
+      <span style="width:20%;background:var(--sun)"></span>
+    </div>
+    <p class="small"><span style="color:#2E8BEA;font-weight:700">Flash máy ảnh +35</span> · <span style="color:#D6337A;font-weight:700">Bà cô đi mách +40</span> · <span style="color:#B58A00;font-weight:700">Trẻ con nhặt cục hụt +20</span> = 95. Thêm một sơ suất là bảo vệ tới. Núp liên tục giảm 8 điểm mỗi giây.</p>
+  </div>
+  <div class="flow">
+    <div class="state" style="background:var(--good-bg)">
+      <span class="badge">…</span>
+      <b>Tuần tra (0–59)</b>
+      <span class="small">Bảo vệ đi qua lại làn giữa. Nón tầm nhìn hẹp, hướng ngang.</span>
+    </div>
+    <div class="state" style="background:#FFF7D6">
+      <span class="badge">?</span>
+      <b>Nghi ngờ (60–99)</b>
+      <span class="small">Bảo vệ dừng lại, quay nón tầm nhìn xuống phía bụi cây 2 giây. Đứng dậy ném lúc này: +25.</span>
+    </div>
+    <div class="state" style="background:var(--bad-bg)">
+      <span class="badge">!</span>
+      <b>Truy đuổi (100)</b>
+      <span class="small">Bảo vệ chạy tới bụi cây và lục 3 giây. Đang núp thì thoát, thanh về 50. Đang đứng thì <b>Game Over</b>.</span>
+    </div>
+  </div>
+
+  <h3 style="margin-top:12px">Bảng va chạm: cục trúng ai thì sao?</h3>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Trúng</th><th>Điểm</th><th>Combo</th><th>Nghi ngờ</th><th>Phản ứng trên màn hình</th></tr></thead>
+      <tbody id="hit-table"></tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:12px">NPC tác động lên nhau</h3>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Ai</th><th>Làm gì</th><th>Lên ai</th><th>Người chơi đối phó bằng</th></tr></thead>
+      <tbody>
+        <tr><td>👵 Bà cô</td><td>Thấy bạn đứng ném, đi bộ 4 giây tới chỗ bảo vệ</td><td>Bảo vệ, thanh nghi ngờ +40</td><td>Núp trước khi bà quay đầu (có dấu 👀 báo trước 1 giây)</td></tr>
+        <tr><td>📸 Nhiếp ảnh gia</td><td>Giơ máy, đèn đỏ nháy 1 giây rồi flash</td><td>Thanh nghi ngờ +35</td><td>Núp đúng lúc flash</td></tr>
+        <tr><td>🤳 Cặp selfie</td><td>Flash điện thoại khi chụp</td><td>Thanh nghi ngờ +15</td><td>Ném trúng họ trước khi chụp, hoặc núp</td></tr>
+        <tr><td>🧒 Trẻ con</td><td>Nhặt cục ném hụt còn nằm dưới đất</td><td>Thanh nghi ngờ +20</td><td>Ném chính xác hơn. Cục hụt tự biến mất sau 5 giây</td></tr>
+        <tr><td>🐕 Chó</td><td>Chạy ngang, nhảy lên đớp cục như đĩa bay</td><td>Đường ném của người chơi</td><td>Canh lúc chó chạy qua rồi mới ném</td></tr>
+        <tr><td>🚶 Người đi đường</td><td>Đi ngang che trước cặp đôi</td><td>Đường ném của người chơi</td><td>Chờ, hoặc ném vòng cung cao qua đầu</td></tr>
+        <tr><td>💑 Cặp đôi</td><td>Né cục rồi ném dép ngược lại</td><td>Người chơi</td><td>Bấm NÚP trong 0,6 giây</td></tr>
+        <tr><td>👮 Bảo vệ</td><td>Chạy tới lục bụi cây khi thanh đầy</td><td>Người chơi</td><td>Núp liên tục 3 giây</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ ĐIỂM & MÀN ============ -->
+<section id="diem">
+  <div class="sec-head">
+    <span class="eyebrow">Điểm số và tiến trình</span>
+    <h2>Công thức <span class="hl">một cú ném</span></h2>
+  </div>
+  <div class="two">
+    <div class="card" style="display:flex;flex-direction:column;gap:12px">
+      <p style="font-family:var(--font-display);font-size:21px;font-weight:700;line-height:1.3">(Điểm gốc + thưởng làn xa) × hệ số combo × hệ số đạn</p>
+      <dl class="kv">
+        <dt>Điểm gốc</dt><dd>100 một người · 300 Double Hit (thay thế, không cộng dồn) · 1.000 Chia Tay · 1.500 nhẫn cầu hôn</dd>
+        <dt>Combo</dt><dd>5 cú trúng liên tiếp: ×2 (Combo Phá Đám) · 10 cú: ×3, tối đa</dd>
+        <dt>Mất combo</dt><dd>Ném hụt, trúng người vô tội, ăn dép</dd>
+        <dt>Hệ số đạn</dt><dd>Cục Vàng ×2, các loại khác ×1</dd>
+        <dt>Điểm trừ</dt><dd>Không nhân combo. Luôn trừ đúng số ghi trong bảng</dd>
+      </dl>
+      <div class="proposal">Thêm mốc ×3 ở 10 combo. Bản gốc chỉ có ×2 nên người chơi giỏi không còn mục tiêu sau cú thứ 5.</div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:10px;background:var(--sky-pale)">
+      <span class="eyebrow">Ví dụ cú đẹp nhất màn 5</span>
+      <p>Cục Vàng trúng cặp tỏ tình ở làn xa đúng lúc “Làm người yêu anh nhé?”, đang combo 6.</p>
+      <p style="font-family:var(--font-display);font-size:20px;font-weight:700;font-variant-numeric:tabular-nums">(1.000 + 50) × 2 × 2 = <span style="color:var(--grass-deep)">4.200</span></p>
+      <p class="small muted">Một cú như vậy bằng 42 cú thường. Đây là khoảnh khắc người chơi muốn quay clip khoe.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:12px">Mỗi màn thêm đúng một thứ mới</h3>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Màn</th><th>Cặp cùng lúc</th><th>Tốc độ</th><th>Thứ mới xuất hiện</th><th>Người chơi học được</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td class="num">2</td><td class="num">1,0×</td><td>Cặp sinh viên ngồi ghế</td><td>Kéo, thả, ném</td></tr>
+        <tr><td class="num">2</td><td class="num">3</td><td class="num">1,0×</td><td>Cặp trà sữa, người đi đường</td><td>Ném mục tiêu di chuyển, tránh người vô tội</td></tr>
+        <tr><td class="num">3</td><td class="num">3</td><td class="num">1,1×</td><td>Bảo vệ, nút NÚP, phản công ném dép</td><td>Thanh nghi ngờ</td></tr>
+        <tr><td class="num">4</td><td class="num">4</td><td class="num">1,2×</td><td>Cặp tỏ tình, bà cô</td><td>Canh thời điểm</td></tr>
+        <tr><td class="num">5</td><td class="num">4</td><td class="num">1,3×</td><td>Chó, cặp selfie</td><td>Đọc đường chạy cắt ngang</td></tr>
+        <tr><td class="num">6</td><td class="num">5</td><td class="num">1,4×</td><td>Trẻ con, ông bà</td><td>Kiềm chế, ném hụt có giá</td></tr>
+        <tr><td class="num">7</td><td class="num">5</td><td class="num">1,5×</td><td>Nhiếp ảnh gia</td><td>Núp theo nhịp</td></tr>
+        <tr><td class="num">8</td><td class="num">6</td><td class="num">1,6×</td><td>Cặp cầu hôn (1 lần mỗi màn)</td><td>Mục tiêu hiếm, rủi ro cao</td></tr>
+        <tr><td class="num">9</td><td class="num">6</td><td class="num">1,7×</td><td>Tất cả cùng lúc</td><td>Tổng hợp</td></tr>
+        <tr><td class="num">Boss</td><td class="num">1</td><td class="num">—</td><td>Cặp Đôi Hạnh Phúc Nhất Công Viên</td><td>Đổi vị trí, phá lá chắn</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ BOSS ============ -->
+<section id="boss">
+  <div class="sec-head">
+    <span class="eyebrow">Boss cuối · đêm pháo hoa · 90 giây</span>
+    <h2>Cặp Đôi <span class="hl">Hạnh Phúc Nhất</span> Công Viên</h2>
+  </div>
+  <div class="player-wrap">
+    <div class="player-stage" id="boss-stage" role="img" aria-label="Boss: cặp đôi trong 3 lớp lá chắn tình yêu" style="background:linear-gradient(#2B2560,#7A3B8F 70%,#3E6B3A 70%)"></div>
+    <div class="grid" style="grid-template-columns:minmax(0,1fr)">
+      <div class="card">
+        <h3>Lớp 1 · Bong bóng tim hồng</h3>
+        <p class="small">Đi qua lại chậm. Cần 3 cú trúng bất kỳ ai. Dạy lại người chơi rằng boss cũng chỉ là mục tiêu.</p>
+      </div>
+      <div class="card">
+        <h3>Lớp 2 · Lá chắn tím, đổi chỗ</h3>
+        <p class="small">Cứ 2 giây hai người đổi vị trí. Chỉ người đang phát sáng mới làm nứt lá chắn. Ném trúng người còn lại thì cục nảy ngược và mất combo. Cần 4 cú đúng người.</p>
+      </div>
+      <div class="card">
+        <h3>Lớp 3 · Lá chắn vàng, phản công</h3>
+        <p class="small">Họ ném dép liên tục và mỗi 15 giây gọi bảo vệ (+30 nghi ngờ). Chỉ Double Hit mới phá được lớp cuối, nên phải chờ lúc họ ôm nhau.</p>
+      </div>
+      <div class="proposal">Kết thúc kiểu chọc cười: lá chắn vỡ, hai người lau mặt, nhìn nhau cười rồi ôm chặt hơn. Màn hình hiện “Bạn thắng. Nhưng họ vẫn yêu nhau.” Mèo Ghen Tị xuất hiện và được mở khóa.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CẦN CHỐT ============ -->
+<section id="chot">
+  <div class="sec-head">
+    <span class="eyebrow">Trước khi vào làm</span>
+    <h2>9 điểm <span class="hl">cần chốt</span></h2>
+    <p class="lede">Đây là những chỗ bản ý tưởng gốc còn mâu thuẫn hoặc chưa đủ để code. Mỗi điểm có đề xuất của mình. Bạn chỉ cần đồng ý hoặc đổi.</p>
+  </div>
+  <div class="decisions">
+    <div class="dec"><div class="id">1</div><div class="body card">
+      <p class="q">Bảo vệ “bắt được” người chơi nghĩa là gì?</p>
+      <p class="why">Người chơi đứng cố định ở đáy màn hình nên không có chuyện bị đuổi kịp theo nghĩa đen.</p>
+      <div class="proposal">Thanh Nghi Ngờ 0–100 cộng dồn từ các nhân chứng. Đầy thanh thì bảo vệ lục bụi cây 3 giây. Đang đứng thì Game Over, đang núp thì thoát.</div>
+    </div></div>
+    <div class="dec"><div class="id">2</div><div class="body card">
+      <p class="q">Ném trúng bảo vệ: trừ 50 hay Game Over?</p>
+      <p class="why">Bản gốc ghi cả hai ở hai chỗ khác nhau.</p>
+      <div class="proposal">Trừ 50 và thanh nghi ngờ nhảy lên 100 ngay. Người chơi vẫn còn cơ hội cứu bằng cách núp kịp.</div>
+    </div></div>
+    <div class="dec"><div class="id">3</div><div class="body card">
+      <p class="q">Kéo chuột theo kiểu nào?</p>
+      <p class="why">“Kéo để ngắm” có thể là kéo về phía mục tiêu hoặc kéo ngược như súng cao su.</p>
+      <div class="proposal">Kéo ngược kiểu súng cao su. Người chơi mobile đã quen, và ngón tay không che mất mục tiêu.</div>
+    </div></div>
+    <div class="dec"><div class="id">4</div><div class="body card">
+      <p class="q">Double Hit trúng hai người bằng một cục kiểu gì?</p>
+      <p class="why">Một cục thường chỉ chạm một hitbox.</p>
+      <div class="proposal">Cục có vùng văng nhỏ. Khi hai người đứng sát (ôm, tựa đầu, selfie) thì vùng văng chạm cả hai. Cục Cầu Vồng xuyên qua nên dễ Double Hit hơn.</div>
+    </div></div>
+    <div class="dec"><div class="id">5</div><div class="body card">
+      <p class="q">Cặp ông bà “không được ném” thì sao nếu ném?</p>
+      <p class="why">Cần vừa có hình phạt vừa có lý do để kiềm chế.</p>
+      <div class="proposal">Trúng: trừ 200, mất combo, nghi ngờ +30. Không động vào ông bà suốt màn: thưởng 200 “Tình yêu bền vững” khi tổng kết.</div>
+    </div></div>
+    <div class="dec"><div class="id">6</div><div class="body card">
+      <p class="q">Chó có bị ném trúng không?</p>
+      <p class="why">Ném phân vào con vật dễ làm game mất chất dễ thương.</p>
+      <div class="proposal">Không. Chó luôn đớp được cục như đĩa bay rồi chạy mất. Mất lượt ném nhưng giữ combo, vì đây không phải lỗi ngắm.</div>
+    </div></div>
+    <div class="dec"><div class="id">7</div><div class="body card">
+      <p class="q">Trẻ con “nhặt vũ khí” để làm gì?</p>
+      <p class="why">Bản gốc nêu hành động nhưng chưa có hậu quả.</p>
+      <div class="proposal">Cục ném hụt nằm lại 5 giây. Trẻ con nhặt được thì chạy khoe mẹ, nghi ngờ +20. Như vậy ném bừa có cái giá.</div>
+    </div></div>
+    <div class="dec"><div class="id">8</div><div class="body card">
+      <p class="q">Màn hình dọc hay ngang?</p>
+      <p class="why">Ảnh hưởng tới bố cục scene, HUD và mọi asset nền.</p>
+      <div class="proposal">Dọc 9:16, ưu tiên mobile vì game cần lan trên TikTok và Facebook. Desktop hiện khung dọc ở giữa, hai bên trang trí công viên.</div>
+    </div></div>
+    <div class="dec"><div class="id">9</div><div class="body card">
+      <p class="q">Tên “Cứt” khi chạy quảng cáo hoặc lên store</p>
+      <p class="why">Facebook Ads, Google Ads và các store có thể từ chối hoặc gắn nhãn tuổi cao vì từ ngữ thô.</p>
+      <div class="proposal">Giữ “Ném Cứt Phá Đám” cho bản web viral. Chuẩn bị tên phụ “FA Strike” hoặc “Ném Phân Phá Đám” cho kênh quảng cáo trả phí.</div>
+    </div></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* ===== Art kit: mọi nhân vật vẽ bằng code, dùng chung tỉ lệ (gốc tọa độ = chân, đầu r=24) ===== */
+const INK = '#2A1A12';
+const S = `stroke="${INK}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
+const S2 = `stroke="${INK}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
+const SFX_FONT = `font-family="Bangers, Impact, 'Arial Black', sans-serif"`;
+
+function heart(cx, cy, s, fill = '#FF4D7E') {
+  const k = s / 24;
+  return `<path transform="translate(${cx} ${cy}) scale(${k})" d="M0,8 C-14,-2 -12,-13 -5,-13 C-1.5,-13 0,-10 0,-9 C0,-10 1.5,-13 5,-13 C12,-13 14,-2 0,8 Z" fill="${fill}" stroke="${INK}" stroke-width="${2.4 / k}" stroke-linejoin="round"/>`;
+}
+function sparkle(cx, cy, r, fill = '#FFF6B0') {
+  const c = r * 0.18;
+  return `<path d="M${cx},${cy - r} Q${cx + c},${cy - c} ${cx + r},${cy} Q${cx + c},${cy + c} ${cx},${cy + r} Q${cx - c},${cy + c} ${cx - r},${cy} Q${cx - c},${cy - c} ${cx},${cy - r} Z" fill="${fill}" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>`;
+}
+function burst(cx, cy, r, text, fill = '#FFD23F', fs = 18, rot = -8) {
+  const n = 11, pts = [];
+  for (let i = 0; i < n * 2; i++) {
+    const a = Math.PI * i / n, rr = i % 2 ? r * (i % 4 === 1 ? 0.62 : 0.72) : r;
+    pts.push(`${(cx + Math.cos(a) * rr).toFixed(1)},${(cy + Math.sin(a) * rr * 0.78).toFixed(1)}`);
+  }
+  return `<g transform="rotate(${rot} ${cx} ${cy})"><polygon points="${pts.join(' ')}" fill="${fill}" ${S}/><text x="${cx}" y="${cy + fs * 0.36}" text-anchor="middle" ${SFX_FONT} font-size="${fs}" fill="${INK}" letter-spacing="1">${text}</text></g>`;
+}
+function blob(circles, fill, sw = 3) {
+  return circles.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${INK}" stroke="${INK}" stroke-width="${sw * 2}"/>`).join('') +
+         circles.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}"/>`).join('');
+}
+function bubble(x, y, text, fs = 13, w) {
+  w = w || text.length * fs * 0.55 + 18;
+  return `<g><rect x="${x - w / 2}" y="${y - fs - 6}" width="${w}" height="${fs + 14}" rx="${(fs + 14) / 2}" fill="#fff" ${S2}/><path d="M${x - 5},${y + 7} L${x},${y + 15} L${x + 4},${y + 7}" fill="#fff" ${S2}/><rect x="${x - 7}" y="${y + 4}" width="12" height="4" fill="#fff"/><text x="${x}" y="${y + 2}" text-anchor="middle" font-family="'Be Vietnam Pro', system-ui, sans-serif" font-weight="700" font-size="${fs}" fill="${INK}">${text}</text></g>`;
+}
+
+/* ---------- mặt ---------- */
+function eyeDot(x) { return `<ellipse cx="${x}" cy="-62" rx="2.9" ry="3.7" fill="${INK}"/><circle cx="${x + 1}" cy="-63.3" r="1" fill="#fff"/>`; }
+function face(t) {
+  const smile = `<path d="M-5,-54 Q0,-50 5,-54" fill="none" ${S2}/>`;
+  const openSmile = `<path d="M-6,-55 Q0,-46 6,-55 Z" fill="#B3263E" ${S2}/>`;
+  switch (t) {
+    case 'happy': return `<path d="M-13,-61 Q-9,-67 -5,-61 M5,-61 Q9,-67 13,-61" fill="none" ${S}/>` + openSmile;
+    case 'closed': return `<path d="M-13,-63 Q-9,-59 -5,-63 M5,-63 Q9,-59 13,-63" fill="none" ${S}/>` + smile;
+    case 'love': return heart(-9, -61, 12) + heart(9, -61, 12) + openSmile;
+    case 'sneaky': return `<path d="M-15,-70 L-5,-68 M5,-71 L15,-73" fill="none" ${S}/><path d="M-14,-63 L-4,-63 M4,-63 L14,-63" fill="none" ${S} stroke-width="3.4"/><circle cx="-6" cy="-60.6" r="2.4" fill="${INK}"/><circle cx="12" cy="-60.6" r="2.4" fill="${INK}"/><path d="M-6,-52 Q2,-50 8,-56" fill="none" ${S}/>`;
+    case 'aim': return `<path d="M-15,-71 L-4,-66 M15,-71 L4,-66" fill="none" ${S}/><path d="M-14,-62 Q-9,-59 -4,-62" fill="none" ${S}/><circle cx="9" cy="-62" r="4.6" fill="#fff" ${S2}/><circle cx="9.5" cy="-62" r="2.2" fill="${INK}"/><path d="M-8,-55 L8,-55 Q6,-48 0,-48 Q-6,-48 -8,-55 Z" fill="#fff" ${S2}/><path d="M-3,-55 L-3,-49 M3,-55 L3,-49" ${S2} stroke-width="1.4"/>`;
+    case 'flat': return `<circle cx="-9" cy="-62" r="2.2" fill="${INK}"/><circle cx="9" cy="-62" r="2.2" fill="${INK}"/><path d="M-5,-52 L5,-52" ${S}/>`;
+    case 'shock': return `<path d="M-15,-74 Q-9,-77 -4,-74 M4,-74 Q9,-77 15,-74" fill="none" ${S2}/><circle cx="-9" cy="-63" r="6" fill="#fff" ${S2}/><circle cx="9" cy="-63" r="6" fill="#fff" ${S2}/><circle cx="-9" cy="-62" r="2" fill="${INK}"/><circle cx="9" cy="-62" r="2" fill="${INK}"/><ellipse cx="0" cy="-50" rx="4.5" ry="5.5" fill="#B3263E" ${S2}/><path d="M21,-80 Q25,-73 21,-70 Q17,-73 21,-80 Z" fill="#8FD3FF" ${S2}/>`;
+    case 'surprised': return `<circle cx="-9" cy="-63" r="5.5" fill="#fff" ${S2}/><circle cx="9" cy="-63" r="5.5" fill="#fff" ${S2}/><circle cx="-8.5" cy="-62.5" r="2.6" fill="${INK}"/><circle cx="9.5" cy="-62.5" r="2.6" fill="${INK}"/><ellipse cx="0" cy="-51.5" rx="3" ry="3.6" fill="#B3263E" ${S2}/>`;
+    case 'angry': return `<path d="M-15,-72 L-4,-66 M15,-72 L4,-66" fill="none" ${S} stroke-width="3.6"/>` + eyeDot(-9) + eyeDot(9) + `<path d="M-6,-49 Q0,-55 6,-49" fill="none" ${S}/>`;
+    case 'dizzy': return `<path d="M-12,-66 L-6,-59 M-6,-66 L-12,-59 M6,-66 L12,-59 M12,-66 L6,-59" ${S}/><path d="M-7,-52 Q-3.5,-56 0,-52 Q3.5,-48 7,-52" fill="none" ${S}/>`;
+    case 'nosy': return `<path d="M-15,-73 Q-9,-77 -4,-73 M4,-73 Q9,-77 15,-73" fill="none" ${S2}/><ellipse cx="-9" cy="-62" rx="5.5" ry="4.5" fill="#fff" ${S2}/><ellipse cx="9" cy="-62" rx="5.5" ry="4.5" fill="#fff" ${S2}/><circle cx="-6" cy="-62" r="2.3" fill="${INK}"/><circle cx="12" cy="-62" r="2.3" fill="${INK}"/><path d="M-14,-64.5 L-4,-64.5 M4,-64.5 L14,-64.5" ${S2}/><ellipse cx="2" cy="-51" rx="3" ry="3.4" fill="#B3263E" ${S2}/>`;
+    default: return eyeDot(-9) + eyeDot(9) + smile;
+  }
+}
+
+/* ---------- tóc / mũ ---------- */
+const GLASSES = `<g fill="rgba(255,255,255,.35)" ${S2}><circle cx="-9" cy="-62" r="6.5"/><circle cx="9" cy="-62" r="6.5"/></g><path d="M-2.5,-62 L2.5,-62" ${S2}/>`;
+function hairBack(st, c, top) {
+  switch (st) {
+    case 'long': return `<path d="M-26,-66 C-29,-40 -24,-33 -12,-33 L12,-33 C24,-33 29,-40 26,-66 Z" fill="${c}" ${S}/>`;
+    case 'bun': return `<circle cx="0" cy="-91" r="10" fill="${c}" ${S}/>`;
+    case 'pony': return `<path d="M18,-76 C42,-74 40,-44 27,-38 C30,-52 26,-62 18,-66 Z" fill="${c}" ${S}/>`;
+    case 'hood': return `<circle cx="0" cy="-63" r="31" fill="${top}" ${S}/><circle cx="0" cy="-61" r="26" fill="rgba(0,0,0,.2)"/>`;
+    default: return '';
+  }
+}
+function hairFront(st, c, top) {
+  const short = `<path d="M-24,-64 C-27,-92 27,-92 24,-64 C17,-73 7,-78 -3,-74 C-11,-79 -19,-75 -24,-64 Z" fill="${c}" ${S}/>`;
+  const long = `<path d="M-25,-62 C-28,-95 28,-95 25,-62 C21,-74 12,-80 2,-76 C-8,-80 -18,-74 -25,-62 Z" fill="${c}" ${S}/>`;
+  switch (st) {
+    case 'short': case 'pony': return short;
+    case 'long': case 'bun': return long;
+    case 'spiky': return `<path d="M-24,-64 L-23,-84 L-13,-80 L-7,-93 L1,-83 L10,-93 L13,-80 L24,-83 L24,-64 C15,-75 -10,-76 -24,-64 Z" fill="${c}" ${S}/>`;
+    case 'grandpa': return `<path d="M-23,-58 C-31,-64 -27,-75 -19,-73 Z M23,-58 C31,-64 27,-75 19,-73 Z" fill="#F4F4F4" ${S2}/><ellipse cx="-8" cy="-80" rx="6" ry="3" fill="#fff" opacity=".7"/>` + GLASSES;
+    case 'grandma': return `<path d="M-24,-63 C-26,-91 26,-91 24,-63 C16,-74 -16,-74 -24,-63 Z" fill="${c}" ${S}/>` + GLASSES;
+    case 'curlers': return short + [-17, -7, 3, 13].map((x, i) => `<rect x="${x}" y="${i % 3 ? -94 : -90}" width="8" height="11" rx="3" fill="#FF9EC4" ${S2}/>`).join('');
+    case 'cap': return short + `<path d="M-25,-70 C-25,-97 25,-97 25,-70 Z" fill="#253B73" ${S}/><path d="M-27,-70 Q0,-62 27,-70 L29,-65 Q0,-55 -29,-65 Z" fill="#1A2A55" ${S}/><circle cx="0" cy="-82" r="4.5" fill="#FFD23F" ${S2}/>`;
+    case 'kidcap': return short + `<path d="M-24,-69 C-24,-95 24,-95 24,-69 Z" fill="#FF8A3D" ${S}/><path d="M8,-71 L37,-71 Q40,-65 30,-64 L6,-66 Z" fill="#E36A1E" ${S}/>`;
+    case 'hood': return `<path d="M-19,-69 C-14,-85 14,-85 19,-69 C10,-75 4,-71 0,-75 C-5,-71 -11,-75 -19,-69 Z" fill="${c}" ${S2}/><path d="M-31,-58 C-33,-99 33,-99 31,-58 L25,-58 C26,-89 -26,-89 -25,-58 Z" fill="${top}" ${S}/>`;
+    default: return '';
+  }
+}
+
+/* ---------- đạo cụ cầm tay (tọa độ tại bàn tay) ---------- */
+function prop(kind, hx, hy) {
+  const g = (inner) => `<g transform="translate(${hx} ${hy})">${inner}</g>`;
+  switch (kind) {
+    case 'boba': return g(`<path d="M-7,-16 L7,-16 L5.5,4 L-5.5,4 Z" fill="#E8C49A" ${S2}/><circle cx="-2" cy="0" r="1.7" fill="${INK}"/><circle cx="2.5" cy="1" r="1.7" fill="${INK}"/><circle cx="0" cy="-3" r="1.7" fill="${INK}"/><rect x="-8.5" y="-19" width="17" height="4" rx="2" fill="#fff" ${S2}/><path d="M2,-19 L6,-29" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><path d="M2,-19 L6,-29" stroke="#FF6FA8" stroke-width="2.5" stroke-linecap="round"/>`);
+    case 'phone': return g(`<rect x="-6" y="-12" width="12" height="20" rx="3" fill="#3A3A4A" ${S2}/><rect x="-3.5" y="-9" width="7" height="12" rx="1.5" fill="#8EC9FF"/>`);
+    case 'rose': return g(`<path d="M0,2 L-3,-24" stroke="${INK}" stroke-width="5.5" stroke-linecap="round"/><path d="M0,2 L-3,-24" stroke="#3E9E48" stroke-width="2.5" stroke-linecap="round"/><path d="M-2,-12 Q-12,-16 -10,-8 Q-5,-8 -2,-12 Z" fill="#3E9E48" ${S2}/><circle cx="-3" cy="-29" r="8" fill="#E8484A" ${S2}/><path d="M-7,-30 Q-3,-35 1,-30 Q-3,-25 -5,-29" fill="none" ${S2} stroke-width="1.6"/>`);
+    case 'ring': return g(`<path d="M-9,-12 L-7,-23 L9,-23 L9,-12 Z" fill="#B52A33" ${S2}/><rect x="-9" y="-12" width="18" height="11" rx="3" fill="#E8484A" ${S2}/><circle cx="0" cy="-14" r="4.2" fill="none" stroke="#FFD23F" stroke-width="2.6"/>` + sparkle(2, -21, 4.5, '#DFF6FF'));
+    case 'camera': return g(`<rect x="-16" y="-10" width="32" height="20" rx="4" fill="#3A3A4A" ${S}/><rect x="-8" y="-14" width="10" height="5" rx="1.5" fill="#3A3A4A" ${S2}/><circle cx="1" cy="0" r="7" fill="#8EC9FF" ${S2}/><circle cx="-1" cy="-2" r="2" fill="#fff"/><circle cx="11" cy="-5" r="2.2" fill="#FF3B3B"/>`);
+    case 'fan': return g(`<path d="M0,0 L-15,-17 A22,22 0 0 1 13,-20 Z" fill="#FF9EC4" ${S2}/><path d="M0,0 L-6,-21 M0,0 L4,-22" ${S2} stroke-width="1.5"/>`);
+    case 'cane': return g(`<path d="M0,-2 L0,${-hy}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><path d="M0,-2 L0,${-hy}" stroke="#A86B3C" stroke-width="3.5" stroke-linecap="round"/><path d="M0,-2 Q0,-10 7,-10" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><path d="M0,-2 Q0,-10 7,-10" fill="none" stroke="#A86B3C" stroke-width="3.5" stroke-linecap="round"/>`);
+    case 'icecream': return g(`<path d="M-6,-6 L6,-6 L0,8 Z" fill="#E8B26A" ${S2}/><circle cx="0" cy="-11" r="7.5" fill="#FF9EC4" ${S2}/>`);
+    case 'poop': return poop('normal', { x: hx, y: hy + 4, s: 0.32 });
+    default: return '';
+  }
+}
+
+/* ---------- người ---------- */
+function person(o = {}) {
+  const p = Object.assign({ skin: '#FFD7B0', hair: '#3B2416', style: 'short', top: '#FF6FA8', bottom: '#3A5BA0', face: 'smile', blush: true,
+    pose: 'stand', lower: 'pants', hands: null, prop: null, propHand: 'r', tilt: 0, extra: '', headExtra: '', x: 0, y: 0, s: 1 }, o);
+  const dy = p.pose === 'sit' ? 10 : p.pose === 'kneel' ? 12 : 0;
+  const h = Object.assign({ l: [-21, -24], r: [21, -24] }, p.hands || {});
+  let legs = '';
+  if (p.pose === 'kneel') {
+    legs = `<rect x="-15" y="-11" width="15" height="11" rx="4" fill="${p.bottom}" ${S}/><rect x="1" y="-21" width="13" height="19" rx="4" fill="${p.bottom}" ${S}/><ellipse cx="8" cy="-2" rx="8" ry="3.6" fill="${INK}"/>`;
+  } else if (p.pose === 'sit') {
+    legs = `<rect x="-13" y="-13" width="11" height="11" rx="3" fill="${p.bottom}" ${S}/><rect x="2" y="-13" width="11" height="11" rx="3" fill="${p.bottom}" ${S}/><ellipse cx="-7" cy="-2" rx="7" ry="3.4" fill="${INK}"/><ellipse cx="8" cy="-2" rx="7" ry="3.4" fill="${INK}"/>`;
+  } else if (p.lower === 'skirt' || p.lower === 'shorts') {
+    legs = `<rect x="-10" y="-17" width="7" height="15" rx="3" fill="${p.skin}" ${S2}/><rect x="3" y="-17" width="7" height="15" rx="3" fill="${p.skin}" ${S2}/><ellipse cx="-7" cy="-2" rx="6.5" ry="3.3" fill="${INK}"/><ellipse cx="7" cy="-2" rx="6.5" ry="3.3" fill="${INK}"/>`;
+  } else {
+    legs = `<rect x="-12" y="-22" width="10" height="20" rx="3" fill="${p.bottom}" ${S}/><rect x="2" y="-22" width="10" height="20" rx="3" fill="${p.bottom}" ${S}/><ellipse cx="-7" cy="-2" rx="7" ry="3.5" fill="${INK}"/><ellipse cx="7" cy="-2" rx="7" ry="3.5" fill="${INK}"/>`;
+  }
+  let lowerOver = '';
+  if (p.pose === 'stand' && p.lower === 'skirt') lowerOver = `<path d="M-14,-27 L14,-27 L19,-13 L-19,-13 Z" fill="${p.bottom}" ${S}/>`;
+  if (p.pose === 'stand' && p.lower === 'shorts') lowerOver = `<path d="M-14,-26 L14,-26 L15,-14 L1,-14 L0,-19 L-1,-14 L-15,-14 Z" fill="${p.bottom}" ${S}/>`;
+  const torso = `<rect x="-16" y="-46" width="32" height="28" rx="11" fill="${p.top}" ${S}/>`;
+  const arm = ([hx, hy], sx) => `<path d="M${sx},-40 L${hx},${hy}" stroke="${INK}" stroke-width="10.5" stroke-linecap="round"/><path d="M${sx},-40 L${hx},${hy}" stroke="${p.top}" stroke-width="5" stroke-linecap="round"/>`;
+  const hand = ([hx, hy]) => `<circle cx="${hx}" cy="${hy}" r="4.6" fill="${p.skin}" ${S2}/>`;
+  const ph = p.propHand === 'l' ? h.l : h.r;
+  const blush = p.blush ? `<ellipse cx="-14" cy="-55" rx="4.2" ry="2.6" fill="#FF8FB8" opacity=".75"/><ellipse cx="14" cy="-55" rx="4.2" ry="2.6" fill="#FF8FB8" opacity=".75"/>` : '';
+  const head = `<g transform="rotate(${p.tilt} 0 -44)">${hairBack(p.style, p.hair, p.top)}<circle cx="0" cy="${p.style === 'hood' ? -61 : -64}" r="${p.style === 'hood' ? 22 : 24}" fill="${p.skin}" ${S}/>${blush}${face(p.face)}${hairFront(p.style, p.hair, p.top)}${p.headExtra}</g>`;
+  return `<g transform="translate(${p.x} ${p.y}) scale(${p.s})"><ellipse cx="0" cy="0" rx="22" ry="5" fill="rgba(42,26,18,.16)"/>${legs}<g transform="translate(0 ${dy})">${torso}${lowerOver}${p.extra}${head}${arm(h.l, -13)}${arm(h.r, 13)}${prop(p.prop, ph[0], ph[1])}${hand(h.l)}${hand(h.r)}${p.over || ''}</g></g>`;
+}
+
+/* ---------- Cục ---------- */
+const POOP = {
+  normal:  { t: ['#7A4A22', '#8A5A2B', '#A06A35'], tip: '#A06A35' },
+  gold:    { t: ['#E0A100', '#F5C518', '#FFDD55'], tip: '#FFE78A' },
+  rainbow: { t: ['#5BC0FF', '#7BD35A', '#FFD23F'], tip: '#FF6FA8' },
+  bomb:    { t: ['#3A3A46', '#4A4A58', '#5C5C6C'], tip: '#5C5C6C' },
+  magnet:  { t: ['#7A4A22', '#8A5A2B', '#A06A35'], tip: null },
+  speed:   { t: ['#2563C9', '#3D86E8', '#64A8FF'], tip: null },
+};
+function poop(v = 'normal', o = {}) {
+  const p = Object.assign({ x: 0, y: 0, s: 1, rot: 0, face: true }, o), c = POOP[v];
+  let pre = '', post = '';
+  const tip = c.tip ? `<path d="M-5,-40 C-3,-50 4,-54 9,-58 C8,-50 7,-44 5,-40 Z" fill="${c.tip}" ${S}/>` : '';
+  if (v === 'gold') post = sparkle(-32, -46, 6) + sparkle(30, -40, 5) + sparkle(20, -62, 4);
+  if (v === 'rainbow') post = sparkle(-30, -40, 5, '#FFC2DD') + sparkle(30, -50, 5, '#C9F0FF');
+  if (v === 'bomb') post = `<path d="M6,-56 Q14,-68 22,-65" fill="none" ${S}/>` + burst(24, -67, 7, '', '#FF8A3D', 1, 0);
+  if (v === 'magnet') pre = `<path d="M-30,-38 Q-36,-28 -30,-18 M-38,-42 Q-46,-28 -38,-14 M30,-38 Q36,-28 30,-18 M38,-42 Q46,-28 38,-14" fill="none" stroke="#E8484A" stroke-width="2.4" stroke-linecap="round"/>`,
+    post = `<path d="M-11,-40 L-11,-52 A11,11 0 0 1 11,-52 L11,-40 L4,-40 L4,-52 A4,4 0 0 0 -4,-52 L-4,-40 Z" fill="#E8484A" ${S2}/><rect x="-11" y="-44" width="7" height="5" fill="#DADDE3" ${S2}/><rect x="4" y="-44" width="7" height="5" fill="#DADDE3" ${S2}/>`;
+  if (v === 'speed') pre = `<path d="M-50,-30 L-34,-30 M-56,-20 L-36,-20 M-48,-10 L-36,-10" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`,
+    post = `<path d="M2,-40 L-4,-56 L3,-54 L0,-68 L10,-50 L3,-52 L8,-40 Z" fill="#FFD23F" ${S2}/>`;
+  const angry = v === 'bomb';
+  const faceSvg = p.face ? `<ellipse cx="-8" cy="-22" rx="5.6" ry="6.6" fill="#fff" ${S2}/><ellipse cx="8" cy="-22" rx="5.6" ry="6.6" fill="#fff" ${S2}/><circle cx="-7" cy="-21" r="2.9" fill="${INK}"/><circle cx="9" cy="-21" r="2.9" fill="${INK}"/><circle cx="-6" cy="-22.5" r="1" fill="#fff"/><circle cx="10" cy="-22.5" r="1" fill="#fff"/>` +
+    (angry ? `<path d="M-14,-31 L-3,-27 M14,-31 L3,-27" ${S}/><path d="M-6,-10 Q0,-15 6,-10" fill="none" ${S}/>` : `<path d="M-8,-13 Q0,-4 8,-13 Z" fill="#B3263E" ${S2}/>`) +
+    `<ellipse cx="-16" cy="-14" rx="3.5" ry="2" fill="#FF8FB8" opacity=".7"/><ellipse cx="16" cy="-14" rx="3.5" ry="2" fill="#FF8FB8" opacity=".7"/>` : '';
+  return `<g transform="translate(${p.x} ${p.y}) rotate(${p.rot}) scale(${p.s})">${pre}${tip}<ellipse cx="0" cy="-35" rx="14" ry="8.5" fill="${c.t[2]}" ${S}/><ellipse cx="0" cy="-23" rx="21" ry="10" fill="${c.t[1]}" ${S}/><ellipse cx="0" cy="-10" rx="28" ry="11" fill="${c.t[0]}" ${S}/><ellipse cx="-7" cy="-38" rx="4" ry="2" fill="#fff" opacity=".55"/><ellipse cx="-12" cy="-27" rx="5" ry="2.2" fill="#fff" opacity=".45"/><ellipse cx="-17" cy="-13" rx="6" ry="2.4" fill="#fff" opacity=".35"/>${faceSvg}${post}</g>`;
+}
+
+/* ---------- chó, ghế, bụi, người chơi nhìn từ sau ---------- */
+function dog(o = {}) {
+  const p = Object.assign({ x: 0, y: 0, s: 1, flip: false, catching: false }, o), fur = '#E8A65A', dark = '#9C5B2E';
+  return `<g transform="translate(${p.x} ${p.y}) scale(${p.flip ? -p.s : p.s} ${p.s})"><ellipse cx="0" cy="0" rx="28" ry="5" fill="rgba(42,26,18,.16)"/>
+    <rect x="-18" y="-16" width="8" height="15" rx="3" fill="${dark}" ${S2}/><rect x="10" y="-16" width="8" height="15" rx="3" fill="${dark}" ${S2}/>
+    <path d="M-23,-26 Q-38,-34 -33,-46" fill="none" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><path d="M-23,-26 Q-38,-34 -33,-46" fill="none" stroke="${fur}" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="0" cy="-23" rx="26" ry="13" fill="${fur}" ${S}/><ellipse cx="-7" cy="-27" rx="8" ry="5" fill="${dark}"/>
+    <rect x="-13" y="-15" width="8" height="15" rx="3" fill="${fur}" ${S2}/><rect x="15" y="-15" width="8" height="15" rx="3" fill="${fur}" ${S2}/>
+    <circle cx="24" cy="-39" r="15" fill="${fur}" ${S}/><ellipse cx="36" cy="-34" rx="9.5" ry="7" fill="#FFE2BF" ${S2}/><ellipse cx="44" cy="-37" rx="3.6" ry="3" fill="${INK}"/>
+    <path d="M14,-49 Q7,-37 13,-28 Q22,-36 20,-49 Z" fill="${dark}" ${S2}/><circle cx="28" cy="-43" r="2.8" fill="${INK}"/><circle cx="29" cy="-44" r="1" fill="#fff"/>
+    <path d="M13,-28 L21,-23" stroke="#E8484A" stroke-width="5" stroke-linecap="round"/>
+    ${p.catching ? poop('normal', { x: 47, y: -26, s: 0.33, rot: 20 }) : `<path d="M35,-29 Q37,-21 42,-27" fill="#FF6F91" ${S2}/>`}</g>`;
+}
+function bench(w = 120) {
+  const x = -w / 2;
+  return `<g><rect x="${x + 8}" y="-20" width="7" height="20" fill="#7A7A86" ${S2}/><rect x="${w / 2 - 15}" y="-20" width="7" height="20" fill="#7A7A86" ${S2}/>
+    <rect x="${x}" y="-58" width="${w}" height="9" rx="3" fill="#C27A3A" ${S2}/><rect x="${x}" y="-44" width="${w}" height="9" rx="3" fill="#C27A3A" ${S2}/>
+    <rect x="${x - 4}" y="-24" width="${w + 8}" height="9" rx="3" fill="#D88B45" ${S2}/></g>`;
+}
+function bush(x, y, s = 1, fill = '#4FB548') {
+  return `<g transform="translate(${x} ${y}) scale(${s})">${blob([[-34, -14, 20], [-12, -26, 24], [14, -24, 22], [34, -12, 18], [0, -6, 26]], fill)}<circle cx="-14" cy="-30" r="5" fill="#7BD35A"/><circle cx="16" cy="-28" r="4" fill="#7BD35A"/></g>`;
+}
+function tree(x, y, s = 1) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-6" y="-40" width="12" height="40" rx="4" fill="#9C6B3E" ${S2}/>${blob([[-20, -56, 20], [0, -72, 24], [20, -56, 20], [0, -48, 20]], '#3FA34D')}<circle cx="-6" cy="-76" r="5" fill="#6CCB5F"/></g>`;
+}
+function playerBack(o = {}) {
+  const p = Object.assign({ x: 0, y: 0, s: 1 }, o), top = '#FF8A3D';
+  return `<g transform="translate(${p.x} ${p.y}) scale(${p.s})">
+    <path d="M-13,-44 L-27,-74" stroke="${INK}" stroke-width="11" stroke-linecap="round"/><path d="M-13,-44 L-27,-74" stroke="${top}" stroke-width="5.5" stroke-linecap="round"/><circle cx="-27" cy="-75" r="5" fill="#FFD7B0" ${S2}/>
+    <rect x="-19" y="-52" width="38" height="36" rx="13" fill="${top}" ${S}/><path d="M-12,-30 L12,-30" stroke="#E36A1E" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="0" cy="-68" r="25" fill="${top}" ${S}/><path d="M0,-92 Q4,-70 0,-48" fill="none" stroke="#E36A1E" stroke-width="3" stroke-linecap="round"/><path d="M-20,-80 Q-24,-64 -16,-52" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+    <path d="M14,-46 L32,-36" stroke="${INK}" stroke-width="11" stroke-linecap="round"/><path d="M14,-46 L32,-36" stroke="${top}" stroke-width="5.5" stroke-linecap="round"/>
+    ${poop('normal', { x: 36, y: -24, s: 0.36 })}<circle cx="33" cy="-35" r="5" fill="#FFD7B0" ${S2}/></g>`;
+}
+
+/* ---------- cặp đôi ---------- */
+const MUST = `<path d="M-10,-55 Q-5,-60 0,-56 Q5,-60 10,-55 Q5,-51 0,-53.5 Q-5,-51 -10,-55 Z" fill="${INK}"/>`;
+const CHEEKS = { l: [-19, -53], r: [19, -53] };
+const COUPLES = {
+  student: () => bench(132) +
+    person({ x: -24, pose: 'sit', hair: '#2B1B12', top: '#5BC0FF', bottom: '#34497A', face: 'closed', tilt: 9, hands: { l: [-20, -22], r: [-2, -22] } }) +
+    person({ x: 24, pose: 'sit', style: 'long', hair: '#5A3418', top: '#FF6FA8', bottom: '#6B5BD6', skin: '#F2C08F', face: 'closed', tilt: -9, hands: { l: [2, -22], r: [20, -22] } }) +
+    heart(0, -100, 20),
+  boba: () =>
+    person({ x: -24, style: 'spiky', hair: '#2B1B12', top: '#7BD35A', bottom: '#3A3A4A', skin: '#D9A06B', face: 'love', prop: 'boba', propHand: 'l', hands: { l: [-22, -32], r: [22, -26] } }) +
+    person({ x: 24, style: 'pony', hair: '#3B2416', top: '#FFD23F', lower: 'skirt', bottom: '#FF6FA8', face: 'love', prop: 'boba', hands: { l: [-22, -26], r: [22, -32] } }) +
+    heart(-4, -106, 12) + heart(10, -114, 9),
+  selfie: () =>
+    person({ x: -22, hair: '#2B1B12', top: '#38C3B5', bottom: '#3A5BA0', face: 'happy', tilt: 10 }) +
+    person({ x: 22, style: 'bun', hair: '#4A2A16', top: '#B28DFF', bottom: '#2F3B55', skin: '#F2C08F', face: 'happy', tilt: -4, prop: 'phone', hands: { l: [-20, -26], r: [30, -86] } }) +
+    sparkle(58, -112, 9, '#fff') + `<path d="M58,-126 L58,-132 M70,-112 L76,-112 M66,-122 L71,-127" stroke="${INK}" stroke-width="2" stroke-linecap="round"/>`,
+  confession: () =>
+    person({ x: -26, pose: 'kneel', hair: '#2B1B12', top: '#FFFFFF', bottom: '#34497A', face: 'closed', prop: 'rose', hands: { l: [-20, -26], r: [20, -38] } }) +
+    person({ x: 28, style: 'long', hair: '#2B1B12', top: '#FF9EC4', lower: 'skirt', bottom: '#FFFFFF', skin: '#F2C08F', face: 'surprised', hands: CHEEKS }) +
+    bubble(0, -112, 'Làm người yêu anh nhé?', 10, 132),
+  proposal: () =>
+    person({ x: -26, pose: 'kneel', hair: '#1E140E', top: '#2F3B55', bottom: '#2F3B55', face: 'smile', prop: 'ring', skin: '#D9A06B', hands: { l: [-20, -26], r: [20, -40] } }) +
+    person({ x: 28, style: 'bun', hair: '#2B1B12', top: '#FFFFFF', lower: 'skirt', bottom: '#FFFFFF', face: 'love', hands: CHEEKS }) +
+    sparkle(-60, -90, 6) + sparkle(62, -104, 7) + sparkle(-4, -112, 5),
+  elders: () =>
+    person({ x: -24, style: 'grandpa', skin: '#F2C08F', top: '#8BB7A0', bottom: '#6B5B4B', face: 'closed', prop: 'cane', propHand: 'l', hands: { l: [-22, -26], r: [22, -28] } }) +
+    person({ x: 24, style: 'grandma', hair: '#C9C9D1', top: '#C77DBA', lower: 'skirt', bottom: '#7A4E8A', face: 'closed', hands: { l: [-22, -28], r: [21, -24] } }) +
+    heart(0, -104, 14, '#FF9EC4'),
+};
+
+/* ---------- NPC ---------- */
+const NPCS = {
+  guard: () => `<polygon points="-30,-60 -100,-86 -100,-30" fill="rgba(255,210,63,.45)" stroke="#E0A100" stroke-width="2" stroke-dasharray="4 4"/>` +
+    person({ style: 'cap', hair: '#2B1B12', top: '#3456A3', bottom: '#22305E', face: 'angry', blush: false, headExtra: MUST,
+      extra: `<path d="M-8,-46 Q0,-34 8,-46" fill="none" stroke="#FFD23F" stroke-width="2.4"/><rect x="-16" y="-25" width="32" height="5" fill="#1A2A55"/>` + sparkle(-7, -36, 5, '#FFD23F'), hands: { l: [-22, -26], r: [22, -26] } }) +
+    burst(40, -96, 16, '!', '#FF6FA8', 22, 8),
+  auntie: () => person({ style: 'curlers', hair: '#6B3A5A', top: '#FF6FA8', lower: 'skirt', bottom: '#8A5CC9', face: 'nosy', skin: '#F2C08F', prop: 'fan', hands: { l: [-21, -26], r: [22, -48] },
+      extra: `<circle cx="-8" cy="-38" r="2.4" fill="#fff"/><circle cx="6" cy="-32" r="2.4" fill="#fff"/><circle cx="-2" cy="-26" r="2.4" fill="#fff"/>` }) +
+    bubble(-30, -104, 'Bảo vệ ơiii!', 11, 92),
+  kid: () => person({ s: 0.8, y: 0, style: 'kidcap', hair: '#2B1B12', top: '#FFD23F', lower: 'shorts', bottom: '#3A5BA0', face: 'happy', skin: '#D9A06B', prop: 'poop', hands: { l: [-21, -26], r: [26, -40] } }) +
+    bubble(0, -100, 'Mẹ ơi cục gì nè!', 11, 120),
+  photographer: () => person({ hair: '#4A2E1A', top: '#B9A16B', bottom: '#4A4A55', face: 'smile', hands: { l: [-15, -58], r: [16, -58] },
+      extra: `<path d="M-12,-45 L12,-22" stroke="#3A3A4A" stroke-width="3"/>`, over: prop('camera', 0, -61) }) +
+    `<circle cx="11" cy="-66" r="9" fill="rgba(255,59,59,.25)"/>` + bubble(46, -96, '3… 2…', 11, 56),
+  passerby: () => person({ hair: '#2B1B12', top: '#38C3B5', bottom: '#4A4A55', face: 'flat', skin: '#F2C08F', hands: { l: [-23, -28], r: [21, -22] },
+      headExtra: `<path d="M-26,-62 C-28,-94 28,-94 26,-62" fill="none" ${S} stroke-width="4"/><rect x="-31" y="-68" width="9" height="14" rx="4" fill="#E8484A" ${S2}/><rect x="22" y="-68" width="9" height="14" rx="4" fill="#E8484A" ${S2}/>` }) +
+    `<path d="M-46,-40 L-34,-40 M-52,-28 L-36,-28" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/>`,
+  dog: () => dog({ x: -6, catching: true }) + burst(44, -86, 22, 'CHOMP!', '#FFD23F', 13, 6),
+};
+
+/* ---------- cảnh gameplay trong khung điện thoại ---------- */
+const UI_FONT = `font-family="'Be Vietnam Pro', system-ui, sans-serif" font-weight="700"`;
+function laneTag(y, label) {
+  const w = label.length * 6.4 + 14;
+  return `<path d="M0,${y} L360,${y}" stroke="#fff" stroke-width="2" stroke-dasharray="6 8" opacity=".7"/><rect x="${352 - w}" y="${y - 9}" width="${w}" height="18" rx="9" fill="rgba(42,26,18,.55)"/><text x="${352 - w / 2}" y="${y + 4}" text-anchor="middle" ${UI_FONT} font-size="10" fill="#fff">${label}</text>`;
+}
+function ammoSlot(cx, cy, v, count, selected) {
+  return `<circle cx="${cx}" cy="${cy}" r="21" fill="#fff" stroke="${selected ? '#FF8A3D' : INK}" stroke-width="${selected ? 5 : 3}"/>${poop(v, { x: cx, y: cy + 11, s: 0.4, face: false })}<circle cx="${cx + 16}" cy="${cy - 15}" r="9" fill="${INK}"/><text x="${cx + 16}" y="${cy - 11.5}" text-anchor="middle" ${UI_FONT} font-size="10" fill="#fff">${count}</text>`;
+}
+function phoneScene() {
+  const arc = 'M232,575 Q178,330 106,298';
+  return `<svg viewBox="0 0 360 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mockup màn chơi: người chơi nấp sau bụi cây ở đáy, các cặp đôi trên ba làn, bảo vệ tuần tra, thanh điểm và thanh nghi ngờ phía trên">
+  <defs>
+    <linearGradient id="ph-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9E5E"/><stop offset=".6" stop-color="#FFC98A"/><stop offset="1" stop-color="#FFE7BD"/></linearGradient>
+    <linearGradient id="ph-grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ED66A"/><stop offset="1" stop-color="#5DB84C"/></linearGradient>
+  </defs>
+  <rect width="360" height="200" fill="url(#ph-sky)"/>
+  <circle cx="290" cy="150" r="34" fill="#FFE27A" stroke="#FFB347" stroke-width="3"/>
+  <g opacity=".9">${blob([[60, 110, 16], [80, 102, 20], [102, 110, 15]], '#FFF4E6', 1.5)}${blob([[210, 80, 12], [226, 74, 16], [244, 80, 12]], '#FFF4E6', 1.5)}</g>
+  <rect y="186" width="360" height="454" fill="url(#ph-grass)"/>
+  ${tree(18, 196, 0.7)}${tree(332, 196, 0.75)}${tree(190, 192, 0.55)}
+  <ellipse cx="70" cy="232" rx="96" ry="22" fill="#6EC6FF" stroke="${INK}" stroke-width="2.5"/><path d="M30,230 L60,230 M90,238 L120,238" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+  <path d="M0,302 C120,286 240,318 360,292 L360,348 C240,372 120,342 0,358 Z" fill="#F3D9A4" stroke="rgba(42,26,18,.35)" stroke-width="2"/>
+  ${laneTag(236, 'XA +50')}${laneTag(338, 'GIỮA')}${laneTag(482, 'GẦN')}
+  ${COUPLE_AT('confession', 250, 236, 0.42)}
+  ${person({ x: 162, y: 236, s: 0.4, style: 'curlers', hair: '#6B3A5A', top: '#FF6FA8', lower: 'skirt', bottom: '#8A5CC9', face: 'nosy', prop: 'fan', hands: { l: [-21, -26], r: [22, -48] } })}
+  <polygon points="300,312 214,292 214,334" fill="rgba(255,226,90,.5)" stroke="#E0A100" stroke-width="1.5" stroke-dasharray="4 4"/>
+  ${COUPLE_AT('student', 104, 338, 0.58)}
+  ${person({ x: 312, y: 338, s: 0.55, style: 'cap', hair: '#2B1B12', top: '#3456A3', bottom: '#22305E', face: 'angry', blush: false, headExtra: MUST })}
+  ${dog({ x: 74, y: 486, s: 0.62 })}<path d="M28,470 L40,470 M22,480 L38,480" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/>
+  ${person({ x: 236, y: 486, s: 0.76, style: 'spiky', hair: '#2B1B12', top: '#7BD35A', bottom: '#3A3A4A', skin: '#D9A06B', face: 'shock', prop: 'boba', propHand: 'l', hands: { l: [-24, -34], r: [22, -26] } })}
+  ${person({ x: 276, y: 486, s: 0.76, style: 'pony', hair: '#3B2416', top: '#FFD23F', lower: 'skirt', bottom: '#FF6FA8', face: 'shock', hands: { l: [-22, -26], r: [26, -50] } })}
+  ${poop('normal', { x: 258, y: 434, s: 0.34, rot: 160 })}
+  ${burst(258, 396, 34, 'SPLAT!', '#FFD23F', 20, -10)}
+  <text x="306" y="420" ${SFX_FONT} font-size="22" fill="#3E9E48" stroke="#fff" stroke-width="4" paint-order="stroke">+300</text>
+  <path d="${arc}" fill="none" stroke="${INK}" stroke-width="9" stroke-linecap="round" pathLength="100" stroke-dasharray="0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 100"/>
+  <path d="${arc}" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round" pathLength="100" stroke-dasharray="0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 4.2 0.1 100"/>
+  <path d="${arc}" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" pathLength="100" stroke-dasharray="0 40 2 6 2 6 2 6 2 6 2 6 2 100" opacity=".45"/>
+  <g transform="translate(106 290)"><circle r="17" fill="none" stroke="#E8484A" stroke-width="3" stroke-dasharray="6 5"/><path d="M-24,0 L-11,0 M11,0 L24,0 M0,-24 L0,-11 M0,11 L0,24" stroke="#E8484A" stroke-width="3" stroke-linecap="round"/></g>
+  ${playerBack({ x: 190, y: 632, s: 1.25 })}
+  ${bush(190, 650, 1.55)}
+  ${ammoSlot(34, 520, 'normal', '∞', true)}${ammoSlot(34, 568, 'gold', 3, false)}${ammoSlot(34, 616, 'rainbow', 1, false)}
+  <circle cx="318" cy="596" r="32" fill="#FF6FA8" stroke="${INK}" stroke-width="3.5"/><text x="318" y="602" text-anchor="middle" ${UI_FONT} font-size="16" fill="#fff" stroke="${INK}" stroke-width="3" paint-order="stroke">NÚP</text>
+  <rect x="10" y="12" width="104" height="32" rx="16" fill="#fff" stroke="${INK}" stroke-width="3"/><text x="62" y="35" text-anchor="middle" ${SFX_FONT} font-size="22" fill="${INK}" letter-spacing="1">12.400</text>
+  <rect x="120" y="12" width="118" height="32" rx="16" fill="#FFD23F" stroke="${INK}" stroke-width="3"/><text x="179" y="33" text-anchor="middle" ${UI_FONT} font-size="12.5" fill="${INK}">COMBO 5 · ×2</text>
+  <rect x="244" y="12" width="106" height="32" rx="16" fill="${INK}"/><text x="297" y="33" text-anchor="middle" ${UI_FONT} font-size="12.5" fill="#fff">MÀN 4 · 1:12</text>
+  <rect x="10" y="52" width="340" height="26" rx="13" fill="rgba(255,255,255,.88)" stroke="${INK}" stroke-width="3"/>
+  <text x="22" y="70" ${UI_FONT} font-size="11" fill="${INK}">NGHI NGỜ</text>
+  <rect x="88" y="59" width="250" height="12" rx="6" fill="#EADFD6"/><rect x="88" y="59" width="112" height="12" rx="6" fill="#FF8A3D"/>
+  <path d="M238,59 L238,71" stroke="${INK}" stroke-width="2"/><text x="238" y="90" text-anchor="middle" ${UI_FONT} font-size="8.5" fill="${INK}">60 · bảo vệ để ý</text>
+  </svg>`;
+}
+function COUPLE_AT(key, x, y, s) { return `<g transform="translate(${x} ${y}) scale(${s})">${COUPLES[key]()}</g>`; }
+
+/* ---------- sân khấu biểu cảm người chơi ---------- */
+const EXPR = {
+  sneaky: { face: 'sneaky', hands: { l: [-9, -34], r: [9, -34] }, note: 'Mặc định khi đứng rình. Hai tay xoa vào nhau, mắt liếc ngang như đang làm chuyện mờ ám.' },
+  aim: { face: 'aim', hands: { l: [-26, -44], r: [26, -60] }, prop: 'poop', note: 'Khi đang kéo ngắm. Một mắt nhắm, cười nham hiểm, Cục cầm sẵn trên vai.' },
+  flat: { face: 'flat', note: 'Khi ném hụt. Mặt đơ 😐 trong 0,8 giây, Cục nằm dưới đất mặt buồn. Đây cũng là lúc trẻ con có thể nhặt nó.' },
+  shock: { face: 'shock', hands: { l: [-27, -72], r: [27, -72] }, note: 'Khi bảo vệ chạy tới. Hai tay giơ lên, mồ hôi văng, bụi khói dưới chân.' },
+  dizzy: { face: 'dizzy', note: 'Khi ăn dép phản công. Dép dính trên đầu, sao bay vòng quanh, choáng 1,5 giây.' },
+};
+function playerStage(key) {
+  const e = EXPR[key];
+  let fx = '';
+  if (key === 'flat') fx = poop('normal', { x: 40, y: 0, s: 0.3, rot: 8 }) + bubble(-36, -100, '…', 16, 40);
+  if (key === 'shock') fx = burst(38, -104, 16, '!', '#FF6FA8', 24, 8) + blob([[-26, -4, 7], [-34, -2, 5], [28, -4, 7], [36, -2, 5]], '#fff', 1.5);
+  if (key === 'aim') fx = `<path d="M-40,-60 L-56,-74" stroke="#E8484A" stroke-width="3" stroke-dasharray="3 5" stroke-linecap="round"/>`;
+  const head = key === 'dizzy' ? `<g transform="rotate(-18 0 -96)"><rect x="-15" y="-102" width="30" height="12" rx="6" fill="#5BC0FF" ${S2}/><path d="M-6,-99 Q0,-106 6,-99" fill="none" stroke="#fff" stroke-width="2.4"/></g>` + sparkle(-30, -94, 6, '#FFD23F') + sparkle(30, -100, 6, '#FFD23F') + sparkle(4, -116, 5, '#FFD23F') : '';
+  return `<svg viewBox="-75 -125 150 150" xmlns="http://www.w3.org/2000/svg"><rect x="-75" y="-125" width="150" height="150" fill="#E6F6FF"/><rect x="-75" y="-6" width="150" height="31" fill="#CDEFB9"/><path d="M-75,-6 L75,-6" stroke="${INK}" stroke-width="1.5" opacity=".25"/>${fx}<g class="bob">${person({ style: 'hood', hair: '#2B1B12', top: '#FF8A3D', bottom: '#4A4A55', face: e.face, blush: false, hands: e.hands, prop: e.prop, headExtra: head,
+    extra: `<path d="M-5,-43 L-5,-33 M5,-43 L5,-33" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M-10,-26 L10,-26" stroke="#E36A1E" stroke-width="3" stroke-linecap="round"/>` })}</g></svg>`;
+}
+
+/* ---------- boss ---------- */
+function bossStage() {
+  const fw = (cx, cy, r, c) => Array.from({ length: 10 }, (_, i) => { const a = i * Math.PI / 5; return `<path d="M${(cx + Math.cos(a) * r * 0.35).toFixed(1)},${(cy + Math.sin(a) * r * 0.35).toFixed(1)} L${(cx + Math.cos(a) * r).toFixed(1)},${(cy + Math.sin(a) * r).toFixed(1)}" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`; }).join('');
+  const ring = (rx, ry, c, n, ly) => `<ellipse cx="150" cy="190" rx="${rx}" ry="${ry}" fill="${c}" fill-opacity=".14" stroke="${c}" stroke-width="4"/><circle cx="${150 + rx * 0.72}" cy="${190 - ry * 0.7}" r="11" fill="${c}" ${S2}/><text x="${150 + rx * 0.72}" y="${195 - ry * 0.7}" text-anchor="middle" ${SFX_FONT} font-size="15" fill="${INK}">${n}</text>`;
+  return `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">${fw(60, 60, 30, '#FFD23F')}${fw(240, 48, 24, '#FF6FA8')}${fw(220, 110, 16, '#8FD3FF')}
+    ${ring(128, 104, '#FF6FA8', 1)}${ring(100, 82, '#B28DFF', 2)}${ring(74, 62, '#FFD23F', 3)}
+    <g transform="translate(150 244) scale(1.05)">${person({ x: -17, hair: '#2B1B12', top: '#E8484A', bottom: '#2F3B55', face: 'love', tilt: 12, hands: { l: [-20, -26], r: [20, -42] } })}${person({ x: 17, style: 'long', hair: '#5A3418', top: '#FFFFFF', lower: 'skirt', bottom: '#E8484A', skin: '#F2C08F', face: 'love', tilt: -12, hands: { l: [-20, -42], r: [20, -26] } })}${heart(0, -106, 20)}</g>
+    <rect x="98" y="14" width="104" height="30" rx="15" fill="${INK}"/><text x="150" y="35" text-anchor="middle" ${UI_FONT} font-size="14" fill="#fff">⏱ 1:12</text></svg>`;
+}
+
+/* ===== Dữ liệu thẻ ===== */
+const AMMO = [
+  { v: 'normal', name: 'Cục Thường', tag: ['good', 'Có sẵn'], body: 'Bay vòng cung, trúng một người. Không giới hạn số lượng.' },
+  { v: 'gold', name: 'Cục Vàng', tag: ['risk', 'Mở ở màn 3'], body: 'Nhân đôi điểm cú đó. Đổi lại nó lấp lánh nên ai nhìn thấy cũng cộng thêm 10 nghi ngờ.' },
+  { v: 'rainbow', name: 'Cục Cầu Vồng', tag: ['risk', 'Mở ở màn 5'], body: 'Xuyên qua người đầu tiên và trúng tiếp người phía sau. Cách dễ nhất để có Double Hit.' },
+  { v: 'bomb', name: 'Cục Bom', tag: ['bad', 'Mở ở màn 6'], body: 'Nổ một vùng tròn lớn. Dính cả người vô tội trong vùng nổ, nên phải chọn lúc vắng.' },
+  { v: 'magnet', name: 'Cục Nam Châm', tag: ['good', 'Mở ở màn 7'], body: 'Tự hút lệch nhẹ về cặp đôi gần nhất. Hỗ trợ ngắm cho mục tiêu ở làn xa.' },
+  { v: 'speed', name: 'Cục Siêu Tốc', tag: ['risk', 'Mở ở màn 8'], body: 'Bay gần như thẳng, nhanh gấp đôi. Cặp đôi không kịp né, nhưng khó canh độ xa.' },
+];
+const COUPLE_CARDS = [
+  { k: 'student', name: 'Sinh viên ghế đá', pts: '+100', lane: 'Làn giữa', move: 'Ngồi yên', from: 'Màn 1', body: 'Mục tiêu tập ném. Thỉnh thoảng tựa đầu vào nhau 2 giây, lúc đó dễ Double Hit.' },
+  { k: 'boba', name: 'Cặp trà sữa', pts: '+100', lane: 'Làn gần, giữa', move: 'Đi bộ chậm', from: 'Màn 2', body: 'Mục tiêu di chuyển đầu tiên. Trúng thì ly trà sữa văng ra, trân châu nảy tung tóe.' },
+  { k: 'selfie', name: 'Cặp selfie', pts: '+100', lane: 'Mọi làn', move: 'Đứng, đổi góc chụp', from: 'Màn 5', body: 'Vừa là mục tiêu vừa là mối nguy. Flash điện thoại có thể chụp lại cảnh bạn đang đứng ném.' },
+  { k: 'confession', name: 'Cặp tỏ tình', pts: '+1.000', lane: 'Làn xa, giữa', move: 'Đứng yên chờ', from: 'Màn 4', body: 'Bong bóng tim to dần rồi hiện câu tỏ tình trong 1,2 giây. Trúng đúng lúc đó: 💔 Chia Tay. Trúng sớm hơn chỉ được 100.' },
+  { k: 'proposal', name: 'Cặp cầu hôn', pts: '+1.500', lane: 'Làn xa', move: 'Đứng yên chờ', from: 'Màn 8', body: 'Hiếm, một lần mỗi màn. Đi kèm một nhiếp ảnh gia quay lại khoảnh khắc, nên rủi ro bị phát hiện rất cao.' },
+  { k: 'elders', name: 'Ông bà', pts: '−200', neg: true, lane: 'Làn gần', move: 'Đi rất chậm', from: 'Màn 6', body: 'Không được ném. Để ông bà đi qua an toàn suốt màn thì được thưởng 200 “Tình yêu bền vững”.' },
+];
+const NPC_CARDS = [
+  { k: 'guard', name: '👮 Bảo vệ', pts: '−50', role: ['bad', 'Kết thúc lượt chơi'], body: 'Tuần tra làn giữa với nón tầm nhìn. Phản ứng theo thanh nghi ngờ. Ném trúng: thanh nhảy lên 100 ngay lập tức.' },
+  { k: 'auntie', name: '👵 Bà cô hóng hớt', pts: '−50', role: ['risk', 'Nhân chứng'], body: 'Đứng quét mắt, có dấu 👀 báo trước 1 giây. Thấy bạn đứng thì đi bộ 4 giây tới bảo vệ: +40. Ném trúng thì bà mách ngay: +60.' },
+  { k: 'kid', name: '🧒 Trẻ con', pts: '−50', role: ['risk', 'Nhân chứng'], body: 'Chạy lăng xăng ở làn gần. Nhặt cục ném hụt rồi chạy khoe mẹ: +20. Ném trúng thì khóc: +30.' },
+  { k: 'photographer', name: '📸 Nhiếp ảnh gia', pts: '−50', role: ['risk', 'Nhân chứng'], body: 'Đi lang thang, giơ máy đếm 3 giây có đèn đỏ rồi flash. Đang đứng trong khung hình lúc flash: +35.' },
+  { k: 'passerby', name: '🚶 Người đi đường', pts: '−50', role: ['risk', 'Che mục tiêu'], body: 'Đeo tai nghe, đi ngang không nhìn ai. Chủ yếu để che cặp đôi và làm bạn ném nhầm.' },
+  { k: 'dog', name: '🐕 Chó', pts: '0', zero: true, role: ['good', 'Chặn đường ném'], body: 'Chạy ngang theo đường chéo, nhảy lên đớp cục như đĩa bay. Mất lượt ném nhưng giữ combo. Chó không bao giờ bị dính.' },
+];
+const HITS = [
+  ['g', 'Mục tiêu'],
+  ['student', 'Một người trong cặp đôi', '+100', 'pos', '+1', '—', '<span class="sfx">SPLAT!</span> Nạn nhân đơ mặt, người kia ngơ ngác'],
+  ['boba', 'Cả hai người (Double Hit)', '+300', 'pos', '+1', '—', 'Hai người nhìn nhau rồi nhìn quanh tìm thủ phạm'],
+  ['confession', 'Cặp tỏ tình đúng khoảnh khắc', '+1.000', 'pos', '+1', '—', '💔 Bông hồng rơi, cô gái bỏ đi, chàng trai quỳ đơ'],
+  ['proposal', 'Cặp cầu hôn lúc mở hộp nhẫn', '+1.500', 'pos', '+1', '—', 'Nhẫn bay lên cây, một con chim tha mất'],
+  ['g', 'Người vô tội'],
+  ['elders', 'Ông bà', '−200', 'neg', 'Mất', '+30', 'Ông giơ gậy, mọi cặp đôi quay lại nhìn'],
+  ['kid', 'Trẻ con', '−50', 'neg', 'Mất', '+30', 'Khóc to, mẹ chạy tới'],
+  ['auntie', 'Bà cô', '−50', 'neg', 'Mất', '+60', '“Trời đất ơi!” rồi đi thẳng tới bảo vệ'],
+  ['photographer', 'Nhiếp ảnh gia', '−50', 'neg', 'Mất', '+35', 'Máy ảnh rơi, tự flash một phát'],
+  ['passerby', 'Người đi đường', '−50', 'neg', 'Mất', '+10', 'Tháo tai nghe, nhìn quanh'],
+  ['guard', 'Bảo vệ', '−50', 'neg', 'Mất', '= 100', '<span class="sfx">POONG!</span> Truy đuổi ngay lập tức'],
+  ['g', 'Vật cản'],
+  ['dog', 'Chó', '0', '', 'Giữ', '—', '<span class="sfx">CHOMP!</span> Chó đớp rồi chạy mất'],
+  [null, 'Ghế, gốc cây, cột đèn', '0', '', 'Mất', '—', '<span class="sfx">BONK!</span> Cục vỡ thành sao'],
+  [null, 'Hồ nước', '0', '', 'Mất', '—', '<span class="sfx">BLOOP!</span> Vịt ngoi lên nhìn khinh bỉ'],
+  [null, 'Đất trống', '0', '', 'Mất', '—', 'Cục nằm lại 5 giây, trẻ con có thể nhặt'],
+];
+
+/* ===== Render ===== */
+const svgWrap = (inner, vb = '-95 -128 190 140') => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="-200" y="-4" width="400" height="200" fill="#CDEFB9"/><path d="M-200,-4 L200,-4" stroke="${INK}" stroke-width="1.5" opacity=".2"/>${inner}</svg>`;
+const $ = (id) => document.getElementById(id);
+
+$('phone').innerHTML = phoneScene();
+$('boss-stage').innerHTML = bossStage();
+
+$('ammo-grid').innerHTML = AMMO.map(a => `<article class="card char ammo">
+  <div class="art"><svg viewBox="-70 -80 140 92" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="0" cy="2" rx="30" ry="5" fill="rgba(42,26,18,.14)"/><g class="wiggle">${poop(a.v)}</g></svg></div>
+  <h3>${a.name}</h3><span><span class="tag ${a.tag[0]}">${a.tag[1]}</span></span><p class="small">${a.body}</p></article>`).join('');
+
+$('couple-grid').innerHTML = COUPLE_CARDS.map(c => `<article class="card char">
+  <div class="art">${svgWrap(COUPLES[c.k]())}</div>
+  <h3>${c.name}<span class="pts ${c.neg ? 'neg' : ''}">${c.pts}</span></h3>
+  <dl class="kv"><dt>Vị trí</dt><dd>${c.lane}</dd><dt>Di chuyển</dt><dd>${c.move}</dd><dt>Xuất hiện</dt><dd>${c.from}</dd></dl>
+  <p class="small">${c.body}</p></article>`).join('');
+
+$('npc-grid').innerHTML = NPC_CARDS.map(n => `<article class="card char">
+  <div class="art">${svgWrap(NPCS[n.k](), n.k === 'guard' ? '-105 -128 190 140' : undefined)}</div>
+  <h3>${n.name}<span class="pts ${n.zero ? 'zero' : 'neg'}">${n.pts}</span></h3>
+  <span><span class="tag ${n.role[0]}">${n.role[1]}</span></span>
+  <p class="small">${n.body}</p></article>`).join('');
+
+const iconFor = (k) => {
+  if (!k) return '';
+  const inner = COUPLES[k] ? COUPLES[k]() : NPCS[k] ? NPCS[k]() : '';
+  return `<span class="ico"><svg viewBox="-60 -118 120 122" aria-hidden="true">${inner}</svg></span>`;
+};
+$('hit-table').innerHTML = HITS.map(r => r[0] === 'g'
+  ? `<tr class="group"><td colspan="5">${r[1]}</td></tr>`
+  : `<tr><td>${iconFor(r[0])}${r[1]}</td><td class="num ${r[3]}">${r[2]}</td><td>${r[4]}</td><td class="num">${r[5]}</td><td>${r[6]}</td></tr>`).join('');
+
+const stage = $('player-stage'), note = $('expr-note');
+function setExpr(key) {
+  stage.innerHTML = playerStage(key);
+  note.textContent = EXPR[key].note;
+  document.querySelectorAll('[data-expr]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.expr === key)));
+}
+document.querySelectorAll('[data-expr]').forEach(b => b.addEventListener('click', () => setExpr(b.dataset.expr)));
+setExpr('sneaky');
+</script>
