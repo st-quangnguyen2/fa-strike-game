@@ -18,6 +18,8 @@ export interface Studio {
   off: HTMLCanvasElement;
   offCtx: CanvasRenderingContext2D;
   toasts: { title: string; body: string; t: number }[];
+  /** Ảnh chụp màn chơi sạch: bỏ chữ quảng cáo, ngón tay và hiệu ứng chuyển cảnh. */
+  clean: boolean;
 }
 
 /** Một cảnh trong video: độ dài, bài nhạc nền, và các hàm chạy theo thời gian cục bộ lt. */
@@ -109,6 +111,7 @@ export abstract class GameScene extends Scene {
     ctx.translate(fx, fy); ctx.scale(zoom, zoom); ctx.translate(-fx, -fy);
     ctx.drawImage(st.off, 0, 0, 360, 640);
     ctx.restore();
+    if (st.clean) return;
     if (this.drag) finger(ctx, (this.drag.cx - fx) * zoom + fx, (this.drag.cy - fy) * zoom + fy);
     this.overlay(st, ctx, lt);
   }

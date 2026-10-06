@@ -11,6 +11,7 @@ import type { Lang } from '../i18n';
 import { makeScenes, timelineInfo } from './sequence';
 import type { Scene, Studio, BigSprite } from './stage';
 import { FPS, VW, VH, PX, mulberry32, sticker, wipe, pop } from './kit';
+import { drawConceptSheet, SHEET_W, SHEET_H } from './sheet';
 
 const canvas = document.getElementById('promo') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
@@ -53,7 +54,7 @@ class Timeline {
         const k = age > 1.35 ? 1 - (age - 1.35) / 0.25 : pop(age, 0, 0.25);
         sticker(ctx, toast.title, toast.body, 180, 160, k);
       }
-      CUTS.forEach((c, n) => wipe(ctx, (t - (c - 0.22)) / 0.44, ['#FF6FA8', '#FFD23F', '#5BC0FF', '#7BD35A'][n % 4]));
+      if (!st.clean) CUTS.forEach((c, n) => wipe(ctx, (t - (c - 0.22)) / 0.44, ['#FF6FA8', '#FFD23F', '#5BC0FF', '#7BD35A'][n % 4]));
     });
   }
 }
@@ -64,7 +65,7 @@ function withRandom<T>(r: () => number, fn: () => T): T {
 }
 
 /* ---------- tài nguyên ---------- */
-let studioBase: Omit<Studio, 'lang' | 'time' | 'toasts'> | null = null;
+let studioBase: Omit<Studio, 'lang' | 'time' | 'toasts' | 'clean'> | null = null;
 async function prepare(): Promise<void> {
   if (studioBase) return;
   status('Đang tải font và vẽ sprite…');
@@ -80,6 +81,7 @@ async function prepare(): Promise<void> {
     add('front.aim', playerFrontSvg('aim'), personBox, 9),
     add('front.happy', playerFrontSvg('happy'), personBox, 9),
     add('front.shock', playerFrontSvg('shock'), personBox, 9),
+    add('front.dizzy', playerFrontSvg('dizzy'), personBox, 9),
     add('boss.m', person({ ...CHARS.bossM.base, ...CHARS.bossM.states.hug }), personBox, 8),
     add('boss.f', person({ ...CHARS.bossF.base, ...CHARS.bossF.states.hug }), personBox, 8),
     ...(['normal', 'gold', 'rainbow', 'bomb', 'magnet', 'speed'] as Ammo[]).map(a => add(`poop.${a}`, poopSvg(a), [-40, -72, 80, 80], 9)),
@@ -92,7 +94,7 @@ async function prepare(): Promise<void> {
 }
 function newStudio(lang: Lang): Studio {
   setLang(lang);
-  return { ...studioBase!, lang, time: 0, toasts: [] };
+  return { ...studioBase!, lang, time: 0, toasts: [], clean: false };
 }
 
 /* ---------- âm thanh: chạy thử để ghi lại hiệu ứng, rồi dựng offline cùng nhạc ---------- */
@@ -285,6 +287,34 @@ async function inspect(lang: Lang, times: number[]): Promise<unknown[]> {
   return out;
 }
 
-(window as unknown as Record<string, unknown>).__promo = { exportVideo, still, preview, probe, inspect, get status() { return statusEl.textContent; } };
+/* ---------- ảnh minh họa cho README ---------- */
+async function postPng(c: HTMLCanvasElement, name: string): Promise<string> {
+  const blob = await new Promise<Blob>(r => c.toBlob(b => r(b!), 'image/png'));
+  const res = await fetch(`/__promo/save?dir=docs/images&name=${name}.png`, { method: 'POST', body: blob });
+  return (await res.json()).file;
+}
+/** Chụp màn chơi sạch (không chữ quảng cáo) tại thời điểm cục bộ `local` của cảnh `sceneName`, lưu 540×960. */
+async function shot(lang: Lang, sceneName: string, local: number, name: string): Promise<string> {
+  await prepare();
+  const s = makeScenes().find(x => x.constructor.name === sceneName);
+  if (!s) throw new Error(`Không có cảnh ${sceneName}`);
+  const st = newStudio(lang); st.clean = true;
+  const tl = new Timeline(st), target = Math.round((s.start + local) * FPS);
+  for (let i = 0; i <= target; i++) tl.update(i);
+  tl.draw(target);
+  const c = document.createElement('canvas'); c.width = 540; c.height = 960;
+  const g = c.getContext('2d')!; g.imageSmoothingQuality = 'high'; g.drawImage(canvas, 0, 0, 540, 960);
+  return postPng(c, name);
+}
+async function conceptSheet(): Promise<string> {
+  await prepare();
+  setLang('en');
+  const c = document.createElement('canvas'); c.width = SHEET_W * 2; c.height = SHEET_H * 2;
+  const g = c.getContext('2d')!; g.setTransform(2, 0, 0, 2, 0, 0); g.imageSmoothingQuality = 'high';
+  drawConceptSheet(g, studioBase!.big);
+  return postPng(c, 'concept-characters');
+}
+
+(window as unknown as Record<string, unknown>).__promo = { exportVideo, still, preview, probe, inspect, shot, conceptSheet, get status() { return statusEl.textContent; } };
 document.getElementById('heading')!.textContent = `Video quảng bá · 1080×1920 · ${Math.floor(DURATION / 60)}:${String(Math.round(DURATION % 60)).padStart(2, '0')}`;
 prepare().then(() => still('vi', 0.6)).then(() => status('Sẵn sàng. Bấm Xem thử hoặc Xuất MP4.'));
