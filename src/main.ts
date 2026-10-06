@@ -7,7 +7,9 @@ import { loadSave, writeSave } from './core/storage';
 import { Play } from './game/play';
 import type { EndResult } from './game/play';
 import * as ui from './ui/screens';
-import { setLang, getLang, detectLang } from './i18n';
+import { setLang, getLang, detectLang, t } from './i18n';
+import { SKINS, CAT_PRICE } from './skins';
+import type { SkinId } from './skins';
 
 const stage = document.getElementById('stage')!;
 const canvas = document.getElementById('game') as HTMLCanvasElement;
@@ -49,15 +51,35 @@ const toggleMute = () => { save.muted = !save.muted; sfx.muted = save.muted; wri
 const toggleMusic = () => { sfx.unlock(); save.music = !save.music; music.setEnabled(save.music); writeSave(save); };
 const toggleLang = () => { save.lang = getLang() === 'vi' ? 'en' : 'vi'; setLang(save.lang); writeSave(save); };
 const sound = { toggleMute, toggleMusic, toggleLang };
+
+function goShop(back: () => void): void {
+  music.play('menu');
+  ui.showShop(save, {
+    buy: item => {
+      const price = item === 'cat' ? CAT_PRICE : SKINS[item].price;
+      if (save.wallet < price) return false;
+      save.wallet -= price;
+      if (item === 'cat') { save.cat = true; save.catOn = true; }
+      else { if (!save.skins.includes(item)) save.skins.push(item); save.skin = item; }
+      writeSave(save);
+      sfx.play('combo');
+      ui.toast(t('shop.bought', { name: t(item === 'cat' ? 'pet.cat' : `skin.${item}` as 'skin.hoodie') }));
+      return true;
+    },
+    equip: (skin: SkinId) => { if (save.skins.includes(skin)) { save.skin = skin; writeSave(save); sfx.play('pop'); } },
+    toggleCat: () => { save.catOn = !save.catOn; writeSave(save); sfx.play('tick'); },
+    back,
+  });
+}
 function goTitle(): void {
   play = null; tod = 'sunset'; void refreshBackground();
   music.duck(false); music.play('menu');
-  ui.showTitle(save, { play: () => { sfx.unlock(); goLevels(); }, ...sound });
+  ui.showTitle(save, { play: () => { sfx.unlock(); goLevels(); }, shop: () => goShop(goTitle), ...sound });
 }
 function goLevels(): void {
   play = null; tod = 'sunset'; void refreshBackground();
   music.duck(false); music.play('menu');
-  ui.showLevels(save, { pick: n => goIntro(n), back: goTitle });
+  ui.showLevels(save, { pick: n => goIntro(n), back: goTitle, shop: () => goShop(goLevels) });
 }
 function goIntro(n: number): void {
   level = n; play = null;
@@ -69,7 +91,8 @@ function startLevel(n: number): void {
   sfx.unlock();
   level = n;
   ui.clearScreen();
-  play = new Play(LEVELS[n - 1], onEnd, pause, ui.toast);
+  play = new Play(LEVELS[n - 1], onEnd, pause, ui.toast, { skin: save.skin, cat: save.cat && save.catOn });
+  if (play.showCat) ui.toast(t('cat.ready'), t('cat.readyBody'));
   tod = play.def.tod; void refreshBackground();
   music.duck(false); music.play(songForTod(tod));
 }
@@ -87,17 +110,22 @@ function pause(): void {
 function onEnd(r: EndResult): void {
   const prev = save.best[r.level];
   let newBest = false;
+  // thắng nhận tổng điểm, thua nhận điểm ném
+  const earned = r.reason === 'win' ? r.total : r.score;
+  save.wallet += earned;
+  const catUnlocked = r.reason === 'win' && r.boss && !save.cat;
+  if (catUnlocked) { save.cat = true; save.catOn = true; }
   if (r.reason === 'win') {
     newBest = prev === undefined || r.total > prev;
     if (newBest) save.best[r.level] = r.total;
     save.unlocked = Math.max(save.unlocked, Math.min(LEVELS.length, r.level + 1));
     if (r.boss) save.bossCleared = true;
-    writeSave(save);
   }
+  writeSave(save);
   // sau đoạn nhạc thắng/thua thì quay lại nhạc menu, trừ khi người chơi đã vào màn mới
   window.setTimeout(() => { if (!play || play.ended) music.play('menu'); }, 1400);
   const hasNext = r.reason === 'win' && r.level < LEVELS.length;
-  ui.showResult(r, newBest, { next: hasNext ? () => goIntro(r.level + 1) : null, retry: () => startLevel(r.level), levels: goLevels });
+  ui.showResult(r, newBest, { earned, catUnlocked, skin: save.skin }, { next: hasNext ? () => goIntro(r.level + 1) : null, retry: () => startLevel(r.level), levels: goLevels });
 }
 
 /* ---------- input ---------- */
@@ -173,7 +201,8 @@ void boot();
 // Móc kiểm thử khi chạy dev: điều khiển màn chơi từ console.
 if (import.meta.env.DEV) {
   (window as unknown as Record<string, unknown>).__ncpd = {
-    get play() { return play; }, startLevel, save, music, sfx,
+    get play() { return play; }, startLevel, save, music, sfx, drawSprite,
+    ctx: () => { ctx.setTransform(scale, 0, 0, scale, 0, 0); return ctx; },
     set autoPause(v: boolean) { autoPause = v; },
     render: () => { ctx.setTransform(scale, 0, 0, scale, 0, 0); play?.render(ctx, bg); },
   };

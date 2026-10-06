@@ -1,5 +1,5 @@
 import { drawSprite } from '../art/sprites';
-import { W, H, PLAYER, BENCHES, DUCK_BTN, AMMO_SLOTS, PAUSE_BTN, AIM, depthScale } from '../config';
+import { W, H, PLAYER, BENCHES, DUCK_BTN, AMMO_SLOTS, PAUSE_BTN, CAT_BTN, depthScale } from '../config';
 import { fmt } from '../core/util';
 import { t as tr } from '../i18n';
 import { Projectile } from './projectile';
@@ -29,6 +29,7 @@ export function renderPlay(p: Play, ctx: CanvasRenderingContext2D, bg: HTMLCanva
   for (const n of p.npcs) items.push({ y: n.a.y, draw: () => n.draw(ctx, t) });
   for (const d of p.dogs) items.push({ y: d.y, draw: () => d.draw(ctx, t) });
   if (p.boss) { const b = p.boss; items.push({ y: b.y, draw: () => b.draw(ctx, t) }); }
+  if (p.pet) { const pet = p.pet; items.push({ y: pet.y, draw: () => pet.draw(ctx, t) }); }
   items.sort((a, b) => a.y - b.y);
   for (const i of items) i.draw();
 
@@ -51,7 +52,8 @@ export function renderPlay(p: Play, ctx: CanvasRenderingContext2D, bg: HTMLCanva
 function drawPlayer(p: Play, ctx: CanvasRenderingContext2D, t: number): void {
   const pl = p.player;
   const y = PLAYER.y + pl.duck * PLAYER.duckDrop;
-  const key = pl.stun > 0 ? 'player.stun' : pl.throwAnim > 0 ? 'player.throw' : p.aimTarget() ? 'player.aim' : 'player.idle';
+  const pose = pl.stun > 0 ? 'stun' : pl.throwAnim > 0 ? 'throw' : p.aimTarget() ? 'aim' : 'idle';
+  const key = `player.${p.skin}.${pose}`;
   const sx = pl.stun > 0 ? Math.sin(t * 40) * 2 : pl.caught ? Math.sin(t * 60) * 3 : 0;
   drawSprite(ctx, key, PLAYER.x + sx, y, PLAYER.s);
   if (pl.stun > 0) for (let i = 0; i < 3; i++) {
@@ -79,14 +81,14 @@ function drawAim(p: Play, ctx: CanvasRenderingContext2D): void {
   if (!tg) return;
   const pr = new Projectile(p.sel, tg.x, tg.y);
   ctx.save();
-  for (let k = 0.04; k <= AIM.predict + 0.001; k += 0.045) {
+  for (let k = 0.04; k <= p.predict + 0.001; k += 0.045) {
     const q = pr.at(k);
     ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(q.x, q.y, 3.6 - k * 2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   }
   if (p.def.reticle) {
     ctx.globalAlpha = 0.45; ctx.fillStyle = '#fff';
-    for (let k = AIM.predict + 0.05; k < 1; k += 0.06) { const q = pr.at(k); ctx.beginPath(); ctx.arc(q.x, q.y, 2, 0, Math.PI * 2); ctx.fill(); }
+    for (let k = p.predict + 0.05; k < 1; k += 0.06) { const q = pr.at(k); ctx.beginPath(); ctx.arc(q.x, q.y, 2, 0, Math.PI * 2); ctx.fill(); }
     ctx.globalAlpha = 1;
     ctx.strokeStyle = '#E8484A'; ctx.lineWidth = 2.5; ctx.setLineDash([5, 4]);
     ctx.beginPath(); ctx.arc(tg.x, tg.y, 13, 0, Math.PI * 2); ctx.stroke();
@@ -162,6 +164,19 @@ function drawHud(p: Play, ctx: CanvasRenderingContext2D, t: number): void {
     label(ctx, Number.isFinite(p.stock[a]) ? String(p.stock[a]) : '∞', cx + 15, cy - 13.5, 10, '#fff', 800);
     ctx.restore();
   });
+
+  // nút Mèo Ghen Tị
+  if (p.showCat) {
+    const ready = p.catReady;
+    ctx.save();
+    if (!ready) ctx.globalAlpha = 0.4;
+    ctx.beginPath(); ctx.arc(CAT_BTN.x, CAT_BTN.y, CAT_BTN.r, 0, Math.PI * 2);
+    ctx.fillStyle = ready ? '#FFD23F' : '#fff'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke();
+    drawSprite(ctx, ready ? 'cat.jealous' : 'cat.happy', CAT_BTN.x - 2, CAT_BTN.y + 18, 0.62);
+    ctx.restore();
+    ctx.beginPath(); ctx.arc(CAT_BTN.x + 17, CAT_BTN.y - 16, 8.5, 0, Math.PI * 2); ctx.fillStyle = INK; ctx.fill();
+    label(ctx, p.catUsed ? '✓' : '1', CAT_BTN.x + 17, CAT_BTN.y - 15.5, 10, '#fff', 800);
+  }
 
   // nút núp
   if (p.showDuck) {

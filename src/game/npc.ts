@@ -23,6 +23,7 @@ export class Npc {
   life = 30;
   gone = false;
   susCd = 0;
+  private distractFor = 0;
   carrying: GroundPoop | null = null;
   owner: { done: boolean; cx: number } | null = null;
 
@@ -60,6 +61,15 @@ export class Npc {
   }
   private exit(): void { this.phase = 'exit'; this.tx = this.a.x < W / 2 ? -40 : W + 40; }
   private pickWander(): void { this.tx = rand(30, 330); this.ty = LANES.near + rand(-8, 18); }
+
+  /** Mèo Ghen Tị tới: bảo vệ quay sang vuốt ve trong sec giây. Trả về true nếu đang truy đuổi người chơi. */
+  distract(sec: number, fromX: number): boolean {
+    if (this.kind !== 'guard') return false;
+    const wasHunting = this.phase === 'chase' || this.phase === 'search';
+    this.phase = 'distracted'; this.t = 0; this.distractFor = sec;
+    this.a.state = 'win'; this.a.walking = false; this.a.flip = fromX < this.a.x;
+    return wasHunting;
+  }
 
   onHit(): void {
     this.phase = 'hit'; this.t = 0;
@@ -124,6 +134,10 @@ export class Npc {
         break;
       case 'hit':
         if (this.t > 0.5) { this.phase = 'chase'; this.t = 0; sfx.play('whistle'); }
+        break;
+      case 'distracted':
+        a.state = 'win'; a.walking = false;
+        if (this.t > this.distractFor) { this.phase = 'return'; this.susCd = 3; }
         break;
     }
   }
@@ -235,7 +249,7 @@ export class Npc {
 
   /** Tầm nhìn bảo vệ: vẽ dưới nhân vật. */
   drawCone(ctx: CanvasRenderingContext2D): void {
-    if (this.kind !== 'guard' || this.phase === 'win') return;
+    if (this.kind !== 'guard' || this.phase === 'win' || this.phase === 'distracted') return;
     const a = this.a, s = this.s, hx = a.x, hy = a.headY();
     ctx.save();
     ctx.beginPath();
@@ -268,6 +282,7 @@ export class Npc {
     else if (this.kind === 'guard') {
       if (this.phase === 'sus' || this.phase === 'search') outlinedText(ctx, '?', a.x + 18 * s, top - 2, 26, '#FFD23F');
       if (this.phase === 'chase') outlinedText(ctx, '!', a.x + 18 * s, top - 2, 30, '#E8484A');
+      if (this.phase === 'distracted') speech(ctx, a.x, top - 6, tr('say.guardCat'), 10);
     }
   }
 }

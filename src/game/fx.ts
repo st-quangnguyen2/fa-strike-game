@@ -20,7 +20,11 @@ export function burstPath(ctx: CanvasRenderingContext2D, cx: number, cy: number,
 }
 
 /** Chữ có viền đậm. */
+/** Bangers không có dấu tiếng Việt: chữ có dấu thì dùng Baloo 2 để khỏi vỡ font. */
+const hasDiacritics = (text: string) => /[À-ỹ]/.test(text);
+
 export function outlinedText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, size: number, fill: string, font = FONT_SFX, stroke = INK, lw = 0.22, align: CanvasTextAlign = 'center'): void {
+  if (font === FONT_SFX && hasDiacritics(text)) font = FONT_DISPLAY;
   ctx.font = `${font.includes('Bangers') ? '' : '800 '}${size}px ${font}`;
   ctx.textAlign = align;
   ctx.textBaseline = 'middle';

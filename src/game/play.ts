@@ -1,8 +1,10 @@
 import type { Ammo } from '../art/kit';
 import {
   W, LANES, GROUND_TOP, LAKE, BENCHES, THROW_ORIGIN, AIM, SCORE, PENALTY, ALERT, AMMO_INFO,
-  DUCK_BTN, AMMO_SLOTS, PAUSE_BTN, comboMult, depthScale, ammoForLevel,
+  DUCK_BTN, AMMO_SLOTS, PAUSE_BTN, CAT_BTN, comboMult, depthScale, ammoForLevel,
 } from '../config';
+import type { SkinId } from '../skins';
+import { CatPet } from './pet';
 import type { LevelDef, NpcKind, CoupleKind, InnocentKind } from '../config';
 import { rand, pick, chance, clamp, circleRect, dist, fmt } from '../core/util';
 import { sfx } from '../core/audio';
@@ -25,6 +27,8 @@ export interface EndResult {
 }
 
 interface Aim { id: number; sx: number; sy: number; cx: number; cy: number }
+/** Đồ người chơi mang vào màn: skin và Mèo Ghen Tị. */
+export interface Loadout { skin: SkinId; cat: boolean }
 type Hit = { kind: 'couple'; c: Couple; a: Actor; y: number } | { kind: 'npc'; n: Npc; y: number }
   | { kind: 'elders'; c: Couple; a: Actor; y: number } | { kind: 'bench'; y: number };
 
@@ -44,6 +48,10 @@ export class Play implements World {
   projectiles: Projectile[] = [];
   slippers: Slipper[] = [];
   boss: Boss | null = null;
+  pet: CatPet | null = null;
+  catUsed = false;
+  readonly skin: SkinId;
+  readonly catOwned: boolean;
   player = { duck: 0, stun: 0, throwAnim: 0, cooldown: 0, caught: false, warn: 0 };
   aim: Aim | null = null;
   private duckPointer: number | null = null;
@@ -57,7 +65,10 @@ export class Play implements World {
   paused = false;
   readonly hasGuard: boolean;
 
-  constructor(public def: LevelDef, private onEnd: (r: EndResult) => void, private onPause: () => void, private toast: (title: string, body?: string) => void) {
+  constructor(public def: LevelDef, private onEnd: (r: EndResult) => void, private onPause: () => void, private toast: (title: string, body?: string) => void,
+    loadout: Loadout = { skin: 'hoodie', cat: false }) {
+    this.skin = loadout.skin;
+    this.catOwned = loadout.cat;
     this.timeLeft = def.time;
     this.hasGuard = def.npcs.includes('guard');
     this.ammoList = ammoForLevel(def.n);
@@ -121,11 +132,28 @@ export class Play implements World {
   }
   private player_x(): number { return 190; }
 
+  /** Ninja núp nhanh hơn 30%. */
+  private get duckRate(): number { return this.skin === 'ninja' ? 1.3 : 1; }
+  /** Phần đường bay được vẽ trước; Ông Chú FA thấy dài hơn 10%. */
+  get predict(): number { return AIM.predict + (this.skin === 'uncle' ? 0.1 : 0); }
+  get showCat(): boolean { return this.catOwned && this.hasGuard; }
+  get catReady(): boolean {
+    return this.showCat && !this.catUsed && !this.ended && !this.player.caught && this.npcs.some(n => n.kind === 'guard');
+  }
+  useCat(): void {
+    if (!this.catReady) return;
+    const g = this.npcs.find(n => n.kind === 'guard')!;
+    this.catUsed = true;
+    this.pet = new CatPet(g, this);
+    sfx.play('swoosh');
+  }
+
   /* ---------------- input ---------------- */
   pointerDown(id: number, x: number, y: number): void {
     if (this.ended) return;
     sfx.unlock();
     if (dist(x, y, PAUSE_BTN.x, PAUSE_BTN.y) < PAUSE_BTN.r + 8) { this.onPause(); return; }
+    if (this.showCat && dist(x, y, CAT_BTN.x, CAT_BTN.y) < CAT_BTN.r + 6) { this.useCat(); return; }
     if (this.showDuck && dist(x, y, DUCK_BTN.x, DUCK_BTN.y) < DUCK_BTN.r + 6) { this.duckPointer = id; this.aim = null; sfx.play('duck'); return; }
     if (this.ammoList.length > 1) {
       const i = this.ammoList.findIndex((_, i) => dist(x, y, AMMO_SLOTS.x, AMMO_SLOTS.y0 - i * AMMO_SLOTS.gap) < AMMO_SLOTS.r + 5);
@@ -152,6 +180,7 @@ export class Play implements World {
     if (code === 'Space') { if (down && !this.keyDuck) sfx.play('duck'); this.keyDuck = down; if (down) this.aim = null; }
     if (!down) return;
     if (code === 'Escape' || code === 'KeyP') this.onPause();
+    if (code === 'KeyC') this.useCat();
     const n = Number(code.replace('Digit', ''));
     if (n >= 1 && n <= this.ammoList.length) this.selectAmmo(this.ammoList[n - 1]);
   }
@@ -202,7 +231,7 @@ export class Play implements World {
     this.time += dt;
     this.fx.update(dt);
     const p = this.player;
-    p.duck = clamp(p.duck + (this.ducking ? 7 : -6) * dt, 0, 1);
+    p.duck = clamp(p.duck + (this.ducking ? 7 : -6) * this.duckRate * dt, 0, 1);
     p.stun = Math.max(0, p.stun - dt);
     p.throwAnim = Math.max(0, p.throwAnim - dt);
     p.cooldown = Math.max(0, p.cooldown - dt);
@@ -222,6 +251,7 @@ export class Play implements World {
     for (const n of this.npcs) n.update(dt);
     for (const d of this.dogs) d.update(dt);
     this.boss?.update(dt);
+    if (this.pet) { this.pet.update(dt); if (this.pet.gone) this.pet = null; }
     for (const g of this.groundPoops) g.life -= dt;
     this.groundPoops = this.groundPoops.filter(g => g.life > 0);
 

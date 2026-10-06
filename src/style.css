@@ -49,8 +49,9 @@ body {
 #overlay > * { pointer-events: auto; }
 .screen {
   position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.2cqh;
+  display: flex; flex-direction: column; align-items: center; justify-content: safe center; gap: 2.2cqh;
   padding: 4cqh 6cqw; text-align: center;
+  overflow-y: auto;
   background: rgba(42, 26, 18, .45);
   backdrop-filter: blur(2px);
   animation: pop-in .22s ease-out;
@@ -96,6 +97,31 @@ body {
 .lvl[disabled] { opacity: .4; cursor: default; }
 .hero-art { width: 30cqh; height: 30cqh; }
 .hero-art svg { width: 100%; height: 100%; overflow: visible; }
+.hero-art.title-art { width: 23cqh; height: 23cqh; }
+
+/* ---------- cửa hàng ---------- */
+.screen.shop { justify-content: flex-start; gap: 1.2cqh; padding-block: 3cqh 2.4cqh; }
+.shop-head { display: flex; align-items: center; justify-content: space-between; gap: 1.5cqh; width: 100%; max-width: 46cqh; }
+.shop-head h2 { font-size: 4.6cqh; }
+.wallet { background: #fff; border: .35cqh solid var(--ink); border-radius: 999px; padding: .5cqh 1.6cqh; font: 800 2.1cqh var(--font-display); font-variant-numeric: tabular-nums; box-shadow: .35cqh .35cqh 0 var(--ink); white-space: nowrap; }
+.shop-scroll { flex: 1; min-height: 0; overflow-y: auto; width: 100%; max-width: 46cqh; display: flex; flex-direction: column; gap: 1.2cqh; padding: .4cqh .8cqh 1cqh .2cqh; text-align: left; }
+.shop-scroll h3 { margin: .6cqh 0 0; font: 800 2.5cqh var(--font-display); }
+.shop-scroll .hint { margin: 0; text-align: center; }
+.skin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2cqh; }
+.skin-card, .pet-card {
+  background: #fff; border: .35cqh solid var(--ink); border-radius: 1.8cqh; box-shadow: .4cqh .4cqh 0 var(--ink);
+  padding: 1cqh; display: flex; flex-direction: column; align-items: center; gap: .5cqh; text-align: center; min-width: 0;
+}
+.skin-card.worn, .pet-card.worn { background: #FFF3C4; }
+.skin-art { width: 100%; height: 15cqh; }
+.skin-art svg, .pet-art svg { width: 100%; height: 100%; overflow: visible; }
+.skin-card b, .pet-card b { font: 800 2.1cqh var(--font-display); line-height: 1.1; }
+.skin-card small, .pet-card small { font-size: 1.45cqh; color: var(--ink-soft); line-height: 1.3; min-height: 3.8cqh; }
+.skin-card .btn, .pet-card .btn { width: 100%; margin-top: auto; }
+.pet-card { flex-direction: row; text-align: left; align-items: center; gap: 1.4cqh; }
+.pet-art { width: 9cqh; height: 10cqh; flex: none; }
+.pet-info { display: flex; flex-direction: column; gap: .5cqh; min-width: 0; flex: 1; }
+.pet-info small { min-height: 0; }
 .tag { display: inline-block; font: 700 1.5cqh var(--font-body); letter-spacing: .08em; text-transform: uppercase; background: #fff; border: .3cqh solid var(--ink); border-radius: .8cqh; padding: .1cqh 1cqh; }
 .new-list { display: flex; flex-wrap: wrap; gap: .8cqh; justify-content: center; }
 .new-list span { background: var(--sun); border: .3cqh solid var(--ink); border-radius: 999px; padding: .2cqh 1.4cqh; font-weight: 700; font-size: 1.9cqh; }

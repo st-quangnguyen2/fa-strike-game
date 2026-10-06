@@ -2,6 +2,7 @@ import { LEVELS, BENCHES, THROW_ORIGIN } from '../config';
 import type { LevelDef, Tod } from '../config';
 import type { Ammo } from '../art/kit';
 import { Play } from '../game/play';
+import type { Loadout } from '../game/play';
 import { Couple } from '../game/couple';
 import { sfx } from '../core/audio';
 import type { SfxName } from '../core/audio';
@@ -54,13 +55,14 @@ export abstract class GameScene extends Scene {
   abstract readonly tod: Tod;
   protected hud = true;
   protected player = true;
+  protected loadout: Loadout = { skin: 'hoodie', cat: false };
 
   constructor(protected level: number, protected over: Partial<LevelDef> = {}) { super(); }
 
   enter(st: Studio): void {
     super.enter(st);
     const def: LevelDef = { ...LEVELS[this.level - 1], couples: 0, npcs: [], counter: false, tod: this.tod, ...this.over };
-    this.p = new Play(def, () => {}, () => {}, (title, body) => st.toasts.push({ title, body: body ?? '', t: st.time }));
+    this.p = new Play(def, () => {}, () => {}, (title, body) => st.toasts.push({ title, body: body ?? '', t: st.time }), this.loadout);
     this.events = [];
     this.ei = 0;
     this.drag = null;

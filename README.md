@@ -26,6 +26,7 @@ You hide behind a bush at the bottom of the screen. Couples sit, walk, take self
 | Aim and throw | Touch, pull back like a slingshot, release | Drag with the mouse |
 | Hide | Hold **HIDE** | Hold **Space** |
 | Switch poop | Tap a poop slot on the left | Keys **1–6** |
+| Send the Jealous Cat | Tap the 🐱 button | **C** |
 | Pause | ⏸ button | **Esc** / **P** |
 
 Only the first 40% of the throw arc is previewed, so landing far shots takes skill.
@@ -41,6 +42,7 @@ Only the first 40% of the throw arc is previewed, so landing far shots takes ski
 - **Getting caught**: at 100% the guard searches your bush for 3 seconds. Standing means game over; hiding means you escape.
 - **Counterattack**: couples may dodge and throw a slipper back. Hide when you see the **!** or you are stunned for 1.5 seconds.
 - **Dog**: it leaps and catches poop mid-air. You lose the throw but keep your combo.
+- **Wallet**: every finished level adds points to your wallet (the full total on a win, your throw points on a loss) to spend in the shop.
 
 ### Levels
 
@@ -56,6 +58,37 @@ Only the first 40% of the throw arc is previewed, so landing far shots takes ski
 | 8 | Night | Proposal couple, Turbo Poop |
 | 9 | Night | Everyone at once |
 | Boss | Fireworks | The Happiest Couple in the Park: shield 1 breaks on any hit, shield 2 only when you hit the glowing partner, shield 3 only with a Double Hit while they hug |
+
+## Shop
+
+Outfits are mostly cosmetic and unlocked with points you earn by playing, so nothing is pay-to-win. Open the shop from the title screen or level select.
+
+<p align="center">
+  <img src="docs/images/shop-outfits.png" alt="The six outfits from the front and from behind as seen in-game, plus the Jealous Cat pet">
+</p>
+
+| Outfit | Price | Effect |
+| --- | --- | --- |
+| FA Hoodie | free | the classic |
+| Student | 2,000 | red scarf and backpack, looks only |
+| Hacker | 5,000 | black hoodie and green glasses, looks only |
+| Superhero | 9,000 | red cape and mask, looks only |
+| Ninja Pooper | 12,000 | hides and stands up 30% faster |
+| FA Uncle | 15,000 | tank top and paper fan, aim preview 10% longer |
+
+### Jealous Cat
+
+<img src="docs/images/gameplay-cat.png" width="240" align="right" alt="The Jealous Cat intercepts the guard mid-chase; the guard says 'Aww, kitty!' and the player is saved">
+
+Free for beating the boss, or 20,000 in the shop. Bring it along (toggle in the shop) and, once per level, tap the 🐱 button or press **C**:
+
+- the cat dashes out of your bush and intercepts the guard,
+- the guard stops to pet it for 3 seconds ("Aww, kitty!"),
+- if the guard was already chasing or searching your bush, the hunt is called off and suspicion drops to 50%.
+
+It only appears in levels with a guard, so save it for the moment the suspicion bar turns red.
+
+<br clear="right">
 
 ## Concept art
 
@@ -73,7 +106,7 @@ The original design review, with every character, rule and the nine design decis
 - **Original chiptune soundtrack**: four procedurally sequenced tracks (menu, day, night, boss). The music picks up when the suspicion bar turns red.
 - **Vietnamese and English**: auto-detected from the browser, switchable from the title and pause screens, and saved with your progress.
 - **Portrait 9:16, mobile first**: multi-touch for aiming and hiding at the same time, letterboxed on desktop.
-- Progress, best scores and settings are stored locally in the browser.
+- Progress, best scores, wallet, outfits and settings are stored locally in the browser.
 
 ## Run locally
 
@@ -104,7 +137,9 @@ src/
   game/npc.ts       Guard, auntie, kid, photographer, passer-by, dog
   game/boss.ts      Boss with three love shields
   game/render.ts    Depth-sorted scene rendering and HUD
-  ui/screens.ts     Menus, level select, intro, pause and result screens (DOM)
+  game/pet.ts       Jealous Cat companion
+  skins.ts          Outfits: looks from the front and back, prices, perks
+  ui/screens.ts     Menus, level select, shop, intro, pause and result screens (DOM)
   core/             WebAudio sound effects and music sequencer, local save, utilities
   i18n.ts           Vietnamese and English strings
 ```
@@ -115,5 +150,4 @@ When running `npm run dev`, the browser console exposes `window.__ncpd` for test
 
 ## Roadmap
 
-- Skin shop (Ninja, FA Uncle, Student, Hacker, Superhero) and the Jealous Cat companion with its own ability
 - Share score cards and clips, leaderboards

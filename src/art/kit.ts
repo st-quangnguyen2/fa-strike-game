@@ -14,7 +14,7 @@ export type Face =
   | 'shock' | 'surprised' | 'angry' | 'dizzy' | 'nosy' | 'cry';
 export type HairStyle =
   | 'short' | 'long' | 'bun' | 'pony' | 'spiky' | 'grandpa' | 'grandma'
-  | 'curlers' | 'cap' | 'kidcap' | 'hood' | 'none';
+  | 'curlers' | 'cap' | 'kidcap' | 'hood' | 'combover' | 'none';
 export type Prop = 'boba' | 'phone' | 'rose' | 'ring' | 'camera' | 'fan' | 'cane' | 'icecream' | 'poop' | null;
 export type Pt = [number, number];
 
@@ -23,6 +23,12 @@ export interface PersonOpts {
   face?: Face; blush?: boolean; pose?: 'stand' | 'sit' | 'kneel'; lower?: 'pants' | 'skirt' | 'shorts';
   hands?: { l?: Pt; r?: Pt }; prop?: Prop; propHand?: 'l' | 'r'; tilt?: number;
   extra?: string; headExtra?: string; over?: string; x?: number; y?: number; s?: number;
+  /** Vẽ sau cùng phía sau cơ thể (áo choàng). */
+  back?: string;
+  /** Vẽ trên mặt nhưng dưới mắt/miệng (mặt nạ siêu anh hùng). */
+  faceUnder?: string;
+  /** Màu tay khi khác màu áo (áo ba lỗ, áo ngắn tay). */
+  armColor?: string;
 }
 
 export function heart(cx: number, cy: number, s: number, fill = '#FF4D7E'): string {
@@ -81,6 +87,7 @@ function hairFront(st: HairStyle, c: string, top: string): string {
     case 'spiky': return `<path d="M-24,-64 L-23,-84 L-13,-80 L-7,-93 L1,-83 L10,-93 L13,-80 L24,-83 L24,-64 C15,-75 -10,-76 -24,-64 Z" fill="${c}" ${S}/>`;
     case 'grandpa': return `<path d="M-23,-58 C-31,-64 -27,-75 -19,-73 Z M23,-58 C31,-64 27,-75 19,-73 Z" fill="#F4F4F4" ${S2}/><ellipse cx="-8" cy="-80" rx="6" ry="3" fill="#fff" opacity=".7"/>` + GLASSES;
     case 'grandma': return `<path d="M-24,-63 C-26,-91 26,-91 24,-63 C16,-74 -16,-74 -24,-63 Z" fill="${c}" ${S}/>` + GLASSES;
+    case 'combover': return `<path d="M-23,-58 C-30,-64 -27,-76 -19,-74 Z M23,-58 C30,-64 27,-76 19,-74 Z" fill="${c}" ${S2}/><path d="M-17,-79 Q-2,-91 16,-80" fill="none" stroke="${INK}" stroke-width="4.6" stroke-linecap="round"/><path d="M-17,-79 Q-2,-91 16,-80" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="-6" cy="-83" rx="5" ry="2.4" fill="#fff" opacity=".6"/>`;
     case 'curlers': return short + [-17, -7, 3, 13].map((x, i) => `<rect x="${x}" y="${i % 3 ? -94 : -90}" width="8" height="11" rx="3" fill="#FF9EC4" ${S2}/>`).join('');
     case 'cap': return short + `<path d="M-25,-70 C-25,-97 25,-97 25,-70 Z" fill="#253B73" ${S}/><path d="M-27,-70 Q0,-62 27,-70 L29,-65 Q0,-55 -29,-65 Z" fill="#1A2A55" ${S}/><circle cx="0" cy="-82" r="4.5" fill="#FFD23F" ${S2}/>`;
     case 'kidcap': return short + `<path d="M-24,-69 C-24,-95 24,-95 24,-69 Z" fill="#FF8A3D" ${S}/><path d="M8,-71 L37,-71 Q40,-65 30,-64 L6,-66 Z" fill="#E36A1E" ${S}/>`;
@@ -110,7 +117,7 @@ export function prop(kind: Prop, hx: number, hy: number): string {
 export function person(o: PersonOpts = {}): string {
   const p = {
     skin: '#FFD7B0', hair: '#3B2416', style: 'short' as HairStyle, top: '#FF6FA8', bottom: '#3A5BA0', face: 'smile' as Face, blush: true,
-    pose: 'stand', lower: 'pants', prop: null as Prop, propHand: 'r', tilt: 0, extra: '', headExtra: '', over: '', x: 0, y: 0, s: 1, ...o,
+    pose: 'stand', lower: 'pants', prop: null as Prop, propHand: 'r', tilt: 0, extra: '', headExtra: '', over: '', back: '', faceUnder: '', x: 0, y: 0, s: 1, ...o,
   };
   const dy = p.pose === 'sit' ? 10 : p.pose === 'kneel' ? 12 : 0;
   const h = { l: [-21, -24] as Pt, r: [21, -24] as Pt, ...(o.hands || {}) };
@@ -128,13 +135,13 @@ export function person(o: PersonOpts = {}): string {
   if (p.pose === 'stand' && p.lower === 'skirt') lowerOver = `<path d="M-14,-27 L14,-27 L19,-13 L-19,-13 Z" fill="${p.bottom}" ${S}/>`;
   if (p.pose === 'stand' && p.lower === 'shorts') lowerOver = `<path d="M-14,-26 L14,-26 L15,-14 L1,-14 L0,-19 L-1,-14 L-15,-14 Z" fill="${p.bottom}" ${S}/>`;
   const torso = `<rect x="-16" y="-46" width="32" height="28" rx="11" fill="${p.top}" ${S}/>`;
-  const arm = ([hx, hy]: Pt, sx: number) => `<path d="M${sx},-40 L${hx},${hy}" stroke="${INK}" stroke-width="10.5" stroke-linecap="round"/><path d="M${sx},-40 L${hx},${hy}" stroke="${p.top}" stroke-width="5" stroke-linecap="round"/>`;
+  const arm = ([hx, hy]: Pt, sx: number) => `<path d="M${sx},-40 L${hx},${hy}" stroke="${INK}" stroke-width="10.5" stroke-linecap="round"/><path d="M${sx},-40 L${hx},${hy}" stroke="${p.armColor ?? p.top}" stroke-width="5" stroke-linecap="round"/>`;
   const hand = ([hx, hy]: Pt) => `<circle cx="${hx}" cy="${hy}" r="4.6" fill="${p.skin}" ${S2}/>`;
   const ph = p.propHand === 'l' ? h.l : h.r;
   const blush = p.blush ? `<ellipse cx="-14" cy="-55" rx="4.2" ry="2.6" fill="#FF8FB8" opacity=".75"/><ellipse cx="14" cy="-55" rx="4.2" ry="2.6" fill="#FF8FB8" opacity=".75"/>` : '';
   const hood = p.style === 'hood';
-  const head = `<g transform="rotate(${p.tilt} 0 -44)">${hairBack(p.style, p.hair, p.top)}<circle cx="0" cy="${hood ? -61 : -64}" r="${hood ? 22 : 24}" fill="${p.skin}" ${S}/>${blush}${face(p.face)}${hairFront(p.style, p.hair, p.top)}${p.headExtra}</g>`;
-  return `<g transform="translate(${p.x} ${p.y}) scale(${p.s})">${legs}<g transform="translate(0 ${dy})">${torso}${lowerOver}${p.extra}${head}${arm(h.l, -13)}${arm(h.r, 13)}${prop(p.prop, ph[0], ph[1])}${hand(h.l)}${hand(h.r)}${p.over}</g></g>`;
+  const head = `<g transform="rotate(${p.tilt} 0 -44)">${hairBack(p.style, p.hair, p.top)}<circle cx="0" cy="${hood ? -61 : -64}" r="${hood ? 22 : 24}" fill="${p.skin}" ${S}/>${blush}${p.faceUnder}${face(p.face)}${hairFront(p.style, p.hair, p.top)}${p.headExtra}</g>`;
+  return `<g transform="translate(${p.x} ${p.y}) scale(${p.s})">${p.back}${legs}<g transform="translate(0 ${dy})">${torso}${lowerOver}${p.extra}${head}${arm(h.l, -13)}${arm(h.r, 13)}${prop(p.prop, ph[0], ph[1])}${hand(h.l)}${hand(h.r)}${p.over}</g></g>`;
 }
 
 /* ---------- Cục ---------- */
@@ -202,18 +209,54 @@ export function lamp(x: number, y: number, s = 1, lit = false): string {
 
 /* ---------- người chơi nhìn từ sau lưng ---------- */
 export type BackPose = 'idle' | 'aim' | 'throw' | 'stun';
-export function playerBack(pose: BackPose, top = '#FF8A3D'): string {
+/** Ngoại hình người chơi nhìn từ sau lưng (mỗi skin một bộ). */
+export interface BackLook {
+  top: string; accent: string; bottom: string; arm: string; skin?: string;
+  head: 'hood' | 'hair' | 'bald'; hair?: string;
+  /** Vẽ đè lên lưng áo: cặp sách, áo choàng, cổ áo ba lỗ… */
+  torso?: string;
+  /** Vẽ đè lên đầu: băng đô ninja… */
+  headExtra?: string;
+}
+export const HOODIE_BACK: BackLook = { top: '#FF8A3D', accent: '#E36A1E', bottom: '#4A4A55', arm: '#FF8A3D', head: 'hood' };
+
+export function playerBack(pose: BackPose, L: BackLook = HOODIE_BACK): string {
+  const skin = L.skin ?? '#FFD7B0';
   const armL: Pt = pose === 'aim' ? [-27, -74] : pose === 'throw' ? [-24, -30] : [-23, -28];
   const armR: Pt = pose === 'aim' ? [33, -30] : pose === 'throw' ? [22, -88] : [24, -28];
-  const arm = ([hx, hy]: Pt, sx: number) => `<path d="M${sx},-44 L${hx},${hy}" stroke="${INK}" stroke-width="11" stroke-linecap="round"/><path d="M${sx},-44 L${hx},${hy}" stroke="${top}" stroke-width="5.5" stroke-linecap="round"/><circle cx="${hx}" cy="${hy}" r="5" fill="#FFD7B0" ${S2}/>`;
+  const arm = ([hx, hy]: Pt, sx: number) => `<path d="M${sx},-44 L${hx},${hy}" stroke="${INK}" stroke-width="11" stroke-linecap="round"/><path d="M${sx},-44 L${hx},${hy}" stroke="${L.arm}" stroke-width="5.5" stroke-linecap="round"/><circle cx="${hx}" cy="${hy}" r="5" fill="${skin}" ${S2}/>`;
   const held = pose === 'aim' ? poop('normal', { x: armR[0] + 3, y: armR[1] + 11, s: 0.36 }) : pose === 'idle' ? poop('normal', { x: armR[0] + 2, y: armR[1] + 12, s: 0.3 }) : '';
   const slipper = pose === 'stun' ? `<g transform="rotate(-16 0 -96)"><rect x="-17" y="-104" width="34" height="13" rx="6.5" fill="#5BC0FF" ${S2}/><path d="M-7,-100 Q0,-108 7,-100" fill="none" stroke="#fff" stroke-width="2.6"/></g>` : '';
   const back = pose === 'aim' ? arm(armL, -13) : '';
   const frontL = pose === 'aim' ? '' : arm(armL, -13);
-  return `${back}<rect x="-14" y="-20" width="12" height="18" rx="3" fill="#4A4A55" ${S}/><rect x="2" y="-20" width="12" height="18" rx="3" fill="#4A4A55" ${S}/>
-    <rect x="-19" y="-52" width="38" height="36" rx="13" fill="${top}" ${S}/><path d="M-12,-30 L12,-30" stroke="#E36A1E" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="0" cy="-68" r="25" fill="${top}" ${S}/><path d="M0,-92 Q4,-70 0,-48" fill="none" stroke="#E36A1E" stroke-width="3" stroke-linecap="round"/><path d="M-20,-80 Q-24,-64 -16,-52" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+  const head = L.head === 'hood'
+    ? `<circle cx="0" cy="-68" r="25" fill="${L.top}" ${S}/><path d="M0,-92 Q4,-70 0,-48" fill="none" stroke="${L.accent}" stroke-width="3" stroke-linecap="round"/><path d="M-20,-80 Q-24,-64 -16,-52" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".45"/>`
+    : L.head === 'hair'
+      ? `<circle cx="-23" cy="-63" r="4.5" fill="${skin}" ${S2}/><circle cx="23" cy="-63" r="4.5" fill="${skin}" ${S2}/><circle cx="0" cy="-66" r="23" fill="${skin}" ${S}/><path d="M-23,-64 C-25,-94 25,-94 23,-64 C22,-57 17,-51 10,-49 L-10,-49 C-17,-51 -22,-57 -23,-64 Z" fill="${L.hair}" ${S}/><path d="M-12,-82 Q-16,-70 -12,-60" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".3"/>`
+      : `<circle cx="-23" cy="-63" r="4.5" fill="${skin}" ${S2}/><circle cx="23" cy="-63" r="4.5" fill="${skin}" ${S2}/><circle cx="0" cy="-66" r="23" fill="${skin}" ${S}/><path d="M-22,-58 C-24,-68 -16,-60 0,-58 C16,-60 24,-68 22,-58 C18,-50 -18,-50 -22,-58 Z" fill="${L.hair}" ${S2}/><ellipse cx="-7" cy="-80" rx="7" ry="3.5" fill="#fff" opacity=".55"/>`;
+  return `${back}<rect x="-14" y="-20" width="12" height="18" rx="3" fill="${L.bottom}" ${S}/><rect x="2" y="-20" width="12" height="18" rx="3" fill="${L.bottom}" ${S}/>
+    <rect x="-19" y="-52" width="38" height="36" rx="13" fill="${L.top}" ${S}/><path d="M-12,-30 L12,-30" stroke="${L.accent}" stroke-width="3" stroke-linecap="round"/>
+    ${L.torso ?? ''}${head}${L.headExtra ?? ''}
     ${frontL}${arm(armR, 13)}${held}${slipper}`;
+}
+
+/* ---------- Mèo Ghen Tị ---------- */
+/** Mèo xám ngồi nhìn thẳng. jealous: mắt lườm, má phồng; happy: mắt cười, đang được vuốt ve. */
+export function cat(mood: 'jealous' | 'happy' = 'jealous'): string {
+  const fur = '#9AA3B5', dark = '#6E7790';
+  const eyes = mood === 'jealous'
+    ? `<path d="M-10,-37 L-3,-36 M3,-36 L10,-37" ${sw(2.6)}/><circle cx="-6" cy="-34" r="1.9" fill="${INK}"/><circle cx="5" cy="-34" r="1.9" fill="${INK}"/><path d="M-3,-27 Q0,-29.5 3,-27" fill="none" ${S2}/><path d="M12,-50 L16,-46 M16,-50 L12,-46" stroke="#E8484A" stroke-width="2.2" stroke-linecap="round"/>`
+    : `<path d="M-10,-35 Q-6.5,-39 -3,-35 M3,-35 Q6.5,-39 10,-35" fill="none" ${S2}/><path d="M-4,-28 Q-2,-25.5 0,-28 Q2,-25.5 4,-28" fill="none" ${S2}/>`;
+  return `<path d="M10,-8 C26,-10 28,-28 20,-38" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/><path d="M10,-8 C26,-10 28,-28 20,-38" fill="none" stroke="${fur}" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="0" cy="-12" rx="13" ry="12" fill="${fur}" ${S}/><ellipse cx="0" cy="-9" rx="7" ry="8" fill="#F4F4F8"/>
+    <ellipse cx="-6" cy="-1" rx="5" ry="3" fill="#F4F4F8" ${S2}/><ellipse cx="6" cy="-1" rx="5" ry="3" fill="#F4F4F8" ${S2}/>
+    <path d="M-13,-40 L-11,-52 L-3,-45 Z M13,-40 L11,-52 L3,-45 Z" fill="${fur}" ${S2}/><path d="M-11,-43 L-10.5,-49 L-6,-45 Z M11,-43 L10.5,-49 L6,-45 Z" fill="#FF9EC4"/>
+    <circle cx="0" cy="-33" r="14" fill="${fur}" ${S}/>
+    <path d="M-4,-46 L-4,-42 M0,-47 L0,-42 M4,-46 L4,-42" stroke="${dark}" stroke-width="1.8" stroke-linecap="round"/>
+    <ellipse cx="-9" cy="-29" rx="3.2" ry="2" fill="#FF8FB8" opacity=".8"/><ellipse cx="9" cy="-29" rx="3.2" ry="2" fill="#FF8FB8" opacity=".8"/>
+    <path d="M-1.5,-31 L1.5,-31 L0,-29.5 Z" fill="#FF6F91"/>
+    <path d="M-16,-31 L-9,-30 M-16,-27 L-9,-28 M16,-31 L9,-30 M16,-27 L9,-28" stroke="${INK}" stroke-width="1" stroke-linecap="round"/>
+    ${eyes}`;
 }
 
 /* ---------- vật phẩm nhỏ ---------- */

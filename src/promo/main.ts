@@ -1,5 +1,6 @@
 import { Output, Mp4OutputFormat, BufferTarget, CanvasSource, AudioBufferSource } from 'mediabunny';
-import { loadSprites, rasterize, renderBackground, playerFrontSvg, poopSvg, CHARS } from '../art/sprites';
+import { loadSprites, rasterize, renderBackground, playerFrontSvg, poopSvg, catSvg, CHARS } from '../art/sprites';
+import { SKIN_ORDER } from '../skins';
 import { person } from '../art/kit';
 import type { Ammo } from '../art/kit';
 import type { Tod } from '../config';
@@ -11,7 +12,7 @@ import type { Lang } from '../i18n';
 import { makeScenes, timelineInfo } from './sequence';
 import type { Scene, Studio, BigSprite } from './stage';
 import { FPS, VW, VH, PX, mulberry32, sticker, wipe, pop } from './kit';
-import { drawConceptSheet, SHEET_W, SHEET_H } from './sheet';
+import { drawConceptSheet, drawOutfitSheet, SHEET_W, SHEET_H, OUTFIT_W, OUTFIT_H } from './sheet';
 
 const canvas = document.getElementById('promo') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
@@ -82,6 +83,8 @@ async function prepare(): Promise<void> {
     add('front.happy', playerFrontSvg('happy'), personBox, 9),
     add('front.shock', playerFrontSvg('shock'), personBox, 9),
     add('front.dizzy', playerFrontSvg('dizzy'), personBox, 9),
+    ...SKIN_ORDER.map(id => add(`skin.${id}`, playerFrontSvg('happy', id), personBox, 7)),
+    add('cat.happy', catSvg('happy'), [-22, -56, 52, 60], 9),
     add('boss.m', person({ ...CHARS.bossM.base, ...CHARS.bossM.states.hug }), personBox, 8),
     add('boss.f', person({ ...CHARS.bossF.base, ...CHARS.bossF.states.hug }), personBox, 8),
     ...(['normal', 'gold', 'rainbow', 'bomb', 'magnet', 'speed'] as Ammo[]).map(a => add(`poop.${a}`, poopSvg(a), [-40, -72, 80, 80], 9)),
@@ -282,7 +285,8 @@ async function inspect(lang: Lang, times: number[]): Promise<unknown[]> {
     while (i <= target) tl.update(i++);
     const p = (tl.current as unknown as { p?: import('../game/play').Play }).p;
     out.push(p ? { t, score: p.score, stun: +p.player.stun.toFixed(2), duck: +p.player.duck.toFixed(2), proj: p.projectiles.length, slippers: p.slippers.length,
-      couples: p.couples.map(c => `${c.kind}:${c.phase}@${Math.round(c.cx)}${c.hitAny ? '*' : ''}`), dogs: p.dogs.map(d => `${d.state}@${Math.round(d.x)}`) } : { t, scene: tl.current?.constructor.name });
+      couples: p.couples.map(c => `${c.kind}:${c.phase}@${Math.round(c.cx)}${c.hitAny ? '*' : ''}`), dogs: p.dogs.map(d => `${d.state}@${Math.round(d.x)}`),
+      guard: p.npcs.filter(n => n.kind === 'guard').map(n => `${n.phase}@${Math.round(n.a.x)},${Math.round(n.a.y)}`), pet: p.pet ? `${p.pet.phase}@${Math.round(p.pet.x)},${Math.round(p.pet.y)}` : null, catUsed: p.catUsed } : { t, scene: tl.current?.constructor.name });
   }
   return out;
 }
@@ -314,7 +318,14 @@ async function conceptSheet(): Promise<string> {
   drawConceptSheet(g, studioBase!.big);
   return postPng(c, 'concept-characters');
 }
+async function outfitSheet(lang: Lang = 'en'): Promise<string> {
+  await prepare();
+  const c = document.createElement('canvas'); c.width = OUTFIT_W * 2; c.height = OUTFIT_H * 2;
+  const g = c.getContext('2d')!; g.setTransform(2, 0, 0, 2, 0, 0); g.imageSmoothingQuality = 'high';
+  drawOutfitSheet(g, studioBase!.big, lang);
+  return postPng(c, lang === 'vi' ? 'shop-outfits-vi' : 'shop-outfits');
+}
 
-(window as unknown as Record<string, unknown>).__promo = { exportVideo, still, preview, probe, inspect, shot, conceptSheet, get status() { return statusEl.textContent; } };
+(window as unknown as Record<string, unknown>).__promo = { exportVideo, still, preview, probe, inspect, shot, conceptSheet, outfitSheet, get status() { return statusEl.textContent; } };
 document.getElementById('heading')!.textContent = `Video quảng bá · 1080×1920 · ${Math.floor(DURATION / 60)}:${String(Math.round(DURATION % 60)).padStart(2, '0')}`;
 prepare().then(() => still('vi', 0.6)).then(() => status('Sẵn sàng. Bấm Xem thử hoặc Xuất MP4.'));

@@ -1,4 +1,6 @@
-import { person, poop, dog, bench, bush, tree, lamp, blob, sparkle, heart, playerBack, slipper, splatMask, brokenHeart, duck, prop as propSvg, INK } from './kit';
+import { person, poop, dog, bench, bush, tree, lamp, blob, sparkle, heart, playerBack, slipper, splatMask, brokenHeart, duck, cat, prop as propSvg, INK } from './kit';
+import { SKINS, SKIN_ORDER } from '../skins';
+import type { SkinId } from '../skins';
 import type { PersonOpts, Ammo, BackPose, Pt } from './kit';
 import { W, H, LAKE } from '../config';
 import type { Tod } from '../config';
@@ -73,7 +75,9 @@ export function spriteDefs(): Record<string, { svg: string; box: [number, number
       defs[`${name}.${st}`] = { svg: person(merged), box: PERSON_BOX };
     }
   }
-  for (const pose of ['idle', 'aim', 'throw', 'stun'] as BackPose[]) defs[`player.${pose}`] = { svg: playerBack(pose), box: [-50, -120, 100, 125] };
+  for (const skin of SKIN_ORDER) for (const pose of ['idle', 'aim', 'throw', 'stun'] as BackPose[]) defs[`player.${skin}.${pose}`] = { svg: playerBack(pose, SKINS[skin].back), box: [-50, -120, 100, 125] };
+  defs['cat.jealous'] = { svg: cat('jealous'), box: [-22, -56, 52, 60] };
+  defs['cat.happy'] = { svg: cat('happy'), box: [-22, -56, 52, 60] };
   for (const a of ['normal', 'gold', 'rainbow', 'bomb', 'magnet', 'speed'] as Ammo[]) defs[`poop.${a}`] = { svg: poop(a), box: [-40, -72, 80, 80] };
   defs['poop.sad'] = { svg: poop('normal', { mood: 'sad' }), box: [-40, -72, 80, 80] };
   defs['dog.run'] = { svg: dog(), box: [-45, -60, 100, 65] };
@@ -129,12 +133,17 @@ export function drawSprite(ctx: CanvasRenderingContext2D, key: string, x: number
   ctx.restore();
 }
 
-/** SVG cho DOM (màn hình menu): người chơi nhìn thẳng với biểu cảm. */
-export function playerFrontSvg(faceKind: 'sneaky' | 'shock' | 'dizzy' | 'happy' | 'aim'): string {
+export type FrontFace = 'sneaky' | 'shock' | 'dizzy' | 'happy' | 'aim';
+/** SVG người chơi nhìn thẳng (menu, cửa hàng, màn kết quả) theo biểu cảm và skin. */
+export function playerFrontSvg(faceKind: FrontFace, skin: SkinId = 'hoodie'): string {
   const hands = faceKind === 'shock' ? { l: [-27, -72] as Pt, r: [27, -72] as Pt } : faceKind === 'aim' ? { l: [-26, -44] as Pt, r: [26, -60] as Pt } : faceKind === 'happy' ? { l: [-26, -70] as Pt, r: [26, -70] as Pt } : { l: [-9, -34] as Pt, r: [9, -34] as Pt };
-  return person({ style: 'hood', hair: '#2B1B12', top: '#FF8A3D', bottom: '#4A4A55', face: faceKind, blush: false, hands, prop: faceKind === 'aim' ? 'poop' : null,
-    extra: `<path d="M-5,-43 L-5,-33 M5,-43 L5,-33" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M-10,-26 L10,-26" stroke="#E36A1E" stroke-width="3" stroke-linecap="round"/>` });
+  const look = SKINS[skin].front;
+  // Ông Chú FA cầm quạt nan khi tay không bận cầm cục
+  const prop = faceKind === 'aim' ? 'poop' : skin === 'uncle' && faceKind !== 'happy' && faceKind !== 'shock' ? 'fan' : null;
+  return person({ ...look, face: faceKind, hands, prop, propHand: prop === 'fan' ? 'l' : 'r' });
 }
+/** SVG Mèo Ghen Tị cho DOM. */
+export function catSvg(mood: 'jealous' | 'happy' = 'jealous'): string { return cat(mood); }
 export { poop as poopSvg };
 
 /* ---------- nền công viên theo giờ trong ngày ---------- */

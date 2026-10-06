@@ -1,4 +1,4 @@
-import { LANES, DUCK_BTN } from '../config';
+import { LANES, DUCK_BTN, CAT_BTN } from '../config';
 import type { Tod } from '../config';
 import type { Ammo } from '../art/kit';
 import { drawSprite } from '../art/sprites';
@@ -7,9 +7,11 @@ import type { Couple } from '../game/couple';
 import { Npc } from '../game/npc';
 import type { Boss } from '../game/boss';
 import { t as gameT } from '../i18n';
+import type { Key } from '../i18n';
+import { SKIN_ORDER } from '../skins';
 import type { SongName } from '../core/music';
 import { caption, sunburst, drawBig, pop, clamp01, outBack, inOutCubic, INK, FONT_DISPLAY, FONT_UI } from './kit';
-import { Scene, GameScene, aimCouple, student, standing, flightTime } from './stage';
+import { Scene, GameScene, aimCouple, student, standing, flightTime, finger } from './stage';
 import type { Studio } from './stage';
 import { label } from './scenes';
 import { COPY } from './copy';
@@ -20,7 +22,7 @@ import { COPY } from './copy';
 export class ProposalScene extends GameScene {
   dur = 5.5; song: SongName = 'night'; tod: Tod = 'night';
   private c!: Couple;
-  constructor() { super(8); }
+  constructor() { super(8); this.loadout = { skin: 'hacker', cat: false }; }
   protected setup(p: Play): void {
     this.c = standing(p, 'proposal', 182, LANES.mid + 12);
     student(p, 0);
@@ -40,7 +42,7 @@ export class ProposalScene extends GameScene {
 export class DangerScene extends GameScene {
   dur = 4.6; song: SongName = 'night'; tod: Tod = 'night';
   intense: [number, number] = [0.9, 4.6];
-  constructor() { super(7, { npcs: ['guard'] }); }
+  constructor() { super(7, { npcs: ['guard'] }); this.loadout = { skin: 'hero', cat: false }; }
   protected setup(p: Play): void {
     p.setAlert(42);
     student(p, 0);
@@ -72,7 +74,7 @@ export class DangerScene extends GameScene {
 export class CaughtScene extends GameScene {
   dur = 4.8; song: SongName = 'night'; tod: Tod = 'night';
   intense: [number, number] = [0, 2.2];
-  constructor() { super(7, { npcs: ['guard'] }); }
+  constructor() { super(7, { npcs: ['guard'] }); this.loadout = { skin: 'student', cat: false }; }
   protected setup(p: Play): void {
     p.setAlert(100);
     student(p, 1);
@@ -135,6 +137,70 @@ export class LevelsScene extends Scene {
   }
 }
 
+/** …trừ khi có Mèo Ghen Tị: bảo vệ đang truy đuổi thì mèo lao ra cứu. */
+export class CatScene extends GameScene {
+  dur = 5.6; song: SongName = 'night'; tod: Tod = 'night';
+  intense: [number, number] = [0, 1.2];
+  constructor() { super(7, { npcs: ['guard'] }); this.loadout = { skin: 'ninja', cat: true }; }
+  protected setup(p: Play): void {
+    p.setAlert(100);
+    student(p, 0);
+    this.at(0.02, q => { const g = q.npcs.find(n => n.kind === 'guard'); if (g) { g.a.x = 304; g.a.y = LANES.mid + 8; } });
+    this.at(0.3, q => q.useCat());
+  }
+  protected overlay(st: Studio, ctx: CanvasRenderingContext2D, lt: number): void {
+    const c = COPY[st.lang];
+    if (lt > 0.02 && lt < 0.5) {
+      ring(ctx, CAT_BTN.x, CAT_BTN.y, CAT_BTN.r, lt);
+      finger(ctx, CAT_BTN.x - 4, CAT_BTN.y + (lt < 0.3 ? 6 : 0));
+    }
+    caption(ctx, c.unlessCat, 180, 232, 38, { at: 0.05, lt, out: 1.5, fill: '#FFD23F' });
+    caption(ctx, c.catSave, 180, 214, 36, { at: 1.6, lt, fill: '#FF6FA8' });
+  }
+}
+
+/* ================= TRANG PHỤC ================= */
+
+/** 6 bộ đồ phá đám. */
+export class SkinsScene extends Scene {
+  dur = 6.2; song: SongName = 'menu';
+  update(_st: Studio, _dt: number, lt: number): void { for (let i = 0; i < 6; i++) this.cue(lt, 0.7 + i * 0.3, 'pop', `s${i}`); this.cue(lt, 2.7, 'combo'); }
+  draw(st: Studio, ctx: CanvasRenderingContext2D, lt: number): void {
+    const c = COPY[st.lang];
+    sunburst(ctx, 180, 340, lt, '#B28DFF', '#C6A8FF');
+    caption(ctx, c.skins, 180, 100, 40, { at: 0.15, lt, fill: '#FFD23F' });
+    const sk = pop(lt, 0.5);
+    if (sk > 0) {
+      ctx.save(); ctx.globalAlpha = Math.min(1, sk);
+      ctx.font = `800 14px ${FONT_DISPLAY}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+      ctx.lineWidth = 4.5; ctx.strokeStyle = INK; ctx.strokeText(c.skinsSub, 180, 160);
+      ctx.fillStyle = '#fff'; ctx.fillText(c.skinsSub, 180, 160);
+      ctx.restore();
+    }
+    const xs = [66, 180, 294], ys = [334, 524];
+    SKIN_ORDER.forEach((id, i) => {
+      const k = pop(lt, 0.7 + i * 0.3);
+      if (k <= 0) return;
+      const x = xs[i % 3], y = ys[Math.floor(i / 3)] + Math.sin(lt * 4 + i) * 2;
+      drawBig(ctx, st.big[`skin.${id}`], x, y, 1.18 * k);
+      label(ctx, gameT(`skin.${id}` as Key), x, y + 16, 14, Math.min(1, k));
+    });
+    const perks: [number, string][] = [[4, c.perkNinja], [5, c.perkUncle]];
+    perks.forEach(([i, text], n) => {
+      const k = pop(lt, 2.7 + n * 0.2);
+      if (k <= 0) return;
+      const x = xs[i % 3], y = ys[1] - 128;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(n ? 0.07 : -0.07); ctx.scale(k, k);
+      ctx.font = `800 11.5px ${FONT_DISPLAY}`;
+      const w = ctx.measureText(text).width + 16;
+      ctx.fillStyle = '#FF6FA8'; ctx.strokeStyle = INK; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.roundRect(-w / 2, -11, w, 22, 11); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, 0, 1);
+      ctx.restore();
+    });
+  }
+}
+
 /* ================= HỒI 5: BOSS ================= */
 
 /** Giới thiệu boss. */
@@ -168,7 +234,7 @@ export class BossIntroScene extends Scene {
 export class BossFightScene extends GameScene {
   dur = 10.0; song: SongName = 'boss'; tod: Tod = 'fireworks';
   private layer = 0;
-  constructor() { super(10, { npcs: [] }); }
+  constructor() { super(10, { npcs: [] }); this.loadout = { skin: 'uncle', cat: false }; }
   protected setup(p: Play): void {
     const b = p.boss!;
     b.hp = 1; b.cx = 150; b.dir = 1;
@@ -238,9 +304,11 @@ export class EndScene extends Scene {
       ctx.restore();
     });
     const pk = pop(lt, 0.4);
-    if (pk > 0) drawBig(ctx, st.big['front.happy'], 180, 452, 1.6 * pk);
+    if (pk > 0) drawBig(ctx, st.big['front.happy'], 168, 452, 1.6 * pk);
+    const ck0 = pop(lt, 0.7);
+    if (ck0 > 0) drawBig(ctx, st.big['cat.happy'], 246, 456 - Math.abs(Math.sin(lt * 5)) * 4, 1.35 * ck0);
     const bounce = (i: number) => -Math.abs(Math.sin(lt * 4 + i * 1.3)) * 14;
-    ([['normal', 62, 410, 0.8], ['gold', 298, 392, 0.7], ['rainbow', 82, 478, 0.6], ['bomb', 284, 474, 0.6]] as [Ammo, number, number, number][])
+    ([['normal', 58, 410, 0.8], ['gold', 304, 384, 0.7], ['rainbow', 78, 478, 0.6], ['bomb', 310, 480, 0.6]] as [Ammo, number, number, number][])
       .forEach(([a, px, py, s], i) => { const k = pop(lt, 0.55 + i * 0.1); if (k > 0) drawBig(ctx, st.big[`poop.${a}`], px, py + bounce(i), s * k); });
     const ck = pop(lt, 1.3);
     if (ck > 0) {

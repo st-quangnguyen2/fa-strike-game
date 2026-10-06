@@ -19,7 +19,9 @@ export const COPY = {
     bossIntro: 'BOSS CUỐI', bossName: 'Cặp Đôi Hạnh Phúc Nhất Công Viên',
     shields: '3 LỚP\nLÁ CHẮN', bossWin: 'BẠN THẮNG.\nNHƯNG HỌ VẪN YÊU NHAU.',
     tagline: 'Phá đám tình yêu chưa bao giờ vui thế',
-    features: ['10 màn', '6 loại Cục', '1 boss', '2 ngôn ngữ'],
+    features: ['10 màn', '6 loại Cục', '6 bộ đồ', '1 boss'],
+    skins: '6 BỘ ĐỒ\nPHÁ ĐÁM', skinsSub: 'Mở khóa bằng điểm chơi, không nạp tiền', perkNinja: 'NÚP NHANH +30%', perkUncle: 'NGẮM XA +10%',
+    unlessCat: '…TRỪ KHI\nCÓ MÈO.', catSave: 'MÈO GHEN TỊ\nCỨU BẠN!',
     cta: 'CHƠI NGAY', footer: 'Miễn phí · Không cần cài đặt · Chơi trên điện thoại',
   },
   en: {
@@ -41,7 +43,9 @@ export const COPY = {
     bossIntro: 'FINAL BOSS', bossName: 'The Happiest Couple in the Park',
     shields: '3 LOVE\nSHIELDS', bossWin: 'YOU WON.\nBUT THEY’RE STILL IN LOVE.',
     tagline: 'Breaking hearts has never been this fun',
-    features: ['10 levels', '6 poop types', '1 boss', 'VI / EN'],
+    features: ['10 levels', '6 poop types', '6 outfits', '1 boss'],
+    skins: '6 OUTFITS TO\nPARTY-POOP IN', skinsSub: 'Unlocked by playing, never by paying', perkNinja: 'HIDE 30% FASTER', perkUncle: 'AIM +10% LONGER',
+    unlessCat: '…UNLESS YOU\nHAVE A CAT.', catSave: 'JEALOUS CAT\nTO THE RESCUE!',
     cta: 'PLAY NOW', footer: 'Free · No download · Plays on your phone',
   },
 };

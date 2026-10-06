@@ -1,7 +1,7 @@
 import type { SongName } from '../core/music';
 import type { Scene } from './stage';
 import { HookScene, RevealScene, TitleSlamScene, WeaponScene, ThrowScene, TimingScene, CastScene, ComboScene, BombScene, DogScene, EldersScene, SlipperScene } from './scenes';
-import { ProposalScene, DangerScene, CaughtScene, LevelsScene, BossIntroScene, BossFightScene, EndScene } from './scenes-late';
+import { ProposalScene, DangerScene, CaughtScene, CatScene, SkinsScene, LevelsScene, BossIntroScene, BossFightScene, EndScene } from './scenes-late';
 
 /** Thứ tự cảnh của trailer. Thời điểm bắt đầu được cộng dồn từ độ dài từng cảnh. */
 export function makeScenes(): Scene[] {
@@ -12,8 +12,10 @@ export function makeScenes(): Scene[] {
     new WeaponScene(), new ThrowScene(), new TimingScene(),
     // Hồi 3: đa dạng
     new CastScene(), new ComboScene(), new BombScene(), new DogScene(), new EldersScene(), new SlipperScene(),
+    // trang phục (các cảnh sau dùng skin khác nhau)
+    new SkinsScene(),
     // Hồi 4: kịch tính
-    new ProposalScene(), new DangerScene(), new CaughtScene(), new LevelsScene(),
+    new ProposalScene(), new DangerScene(), new CaughtScene(), new CatScene(), new LevelsScene(),
     // Hồi 5: boss
     new BossIntroScene(), new BossFightScene(),
     // Hồi 6: kết

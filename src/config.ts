@@ -16,6 +16,9 @@ export function depthScale(y: number): number {
 export const PLAYER = { x: 190, y: 614, s: 1.25, duckDrop: 64 };
 export const THROW_ORIGIN = { x: 232, y: 574 };
 export const DUCK_BTN = { x: 316, y: 594, r: 34 };
+export const CAT_BTN = { x: 324, y: 524, r: 24 };
+/** Thời gian Mèo Ghen Tị giữ chân bảo vệ. */
+export const CAT_DISTRACT = 3;
 export const AMMO_SLOTS = { x: 30, y0: 614, gap: 44, r: 19 };
 export const PAUSE_BTN = { x: 336, y: 102, r: 16 };
 export const LAKE = { x: 74, y: 210, rx: 92, ry: 16 };
